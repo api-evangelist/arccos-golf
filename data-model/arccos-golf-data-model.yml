@@ -1,0 +1,291 @@
+generated: '2026-08-06'
+method: derived
+source: >-
+  openapi/arccos-golf-on-course-data-api-openapi.yml — 36 definitions, their $ref/allOf composition and their
+  *Id reference fields
+summary: >-
+  The Arccos on-course data graph. A User plays Rounds; a Round is played at a versioned Course and is composed
+  of RoundHoles, each carrying the Course's Hole geometry, a Pin location, HoleStats and the Shots played. Each
+  Shot names the Club it was hit with. Round stats are computed separately as a Strokes Gained + traditional
+  breakdown keyed to a goalHandicap. Webhooks are a small independent registration entity.
+identifiers:
+  style: opaque strings in the spec, integers in practice for courseId
+  observed: 'GET /v5/courses?name=Pebble returned courseId 540 with courseVersion 6 (2026-08-06)'
+  composite_keys:
+  - entity: Course
+    key:
+    - courseId
+    - courseVersion
+    note: >-
+      A course is versioned. Rounds pin both courseId and courseVersion so historical rounds keep the geometry
+      they were played against.
+  user_id_source: >-
+    The {userId} path parameter is the custom:arccosUserId claim from the OIDC id_token, not a value the client
+    chooses.
+entities:
+- name: User
+  root: true
+  operations:
+  - handle_get_one_user.get./v5/users/{userId}
+  key: userId
+  fields:
+  - userId
+  - firstName
+  - lastName
+  - email
+  - stance
+  - gender
+  - estimatedHandicap
+  pii: true
+- name: Round
+  root: true
+  operations:
+  - handle_search_rounds.get./v5/users/{userId}/rounds
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  key: roundId
+  fields:
+  - roundId
+  - userId
+  - startTime
+  - endTime
+  - totalScore
+  - courseId
+  - courseVersion
+  - courseName
+  - numberOfHoles
+  - tee
+- name: RoundDetails
+  composed: true
+  composition:
+  - Round
+  - RoundHole
+  note: allOf composition returned by Get One Round.
+- name: RoundHole
+  composed: true
+  composition:
+  - Hole
+  - HoleStat
+  - Pin
+  - Shot
+- name: Hole
+  key: holeId
+- name: Pin
+  composition:
+  - Location
+- name: Shot
+  key: shotId
+  fields:
+  - shotId
+  - clubId
+  - clubType
+  - startLocation
+  - endLocation
+  - shotDistance
+  - shotTime
+  - startAltitude
+  - endAltitude
+  - numberOfPenalties
+  - startTerrain
+  - endTerrain
+  - startMetersToCenterOfGreen
+  - endMetersToCenterOfGreenMeters
+  - endsOnFairway
+  - isLeftOfFairway
+  - isRightOfFairway
+  - isLeftOfCenterline
+  - isRightOfCenterline
+  - metersFromFairwayBounds
+  - metersFromFairwayCenterline
+  geo: startLocation and endLocation are Location (lat/lon)
+- name: Club
+  root: true
+  operations:
+  - handle_search_clubs.get./v5/users/{userId}/clubs
+  - handle_get_one_club.get./v5/users/{userId}/clubs/{clubId}
+  key: clubId
+  fields:
+  - clubId
+  - status
+  - make
+  - model
+  - clubType
+  - stats
+  enums:
+    status:
+    - paired
+    - unpaired
+    - deleted
+- name: Course
+  root: true
+  operations:
+  - handle_search_courses.get./v5/courses
+  - handle_get_one_course.get./v5/courses/{courseId}
+  - handle_get_one_course_version.get./v5/courses/{courseId}/versions/{courseVersion}
+  key:
+  - courseId
+  - courseVersion
+  fields:
+  - courseId
+  - courseVersion
+  - name
+  - numberOfHoles
+  - mensPar
+  - womensPar
+  - location
+  - city
+  - state
+  - country
+  - altitude
+  - holes
+  - tees
+  public: true
+- name: CourseHole
+  key: holeId
+  fields:
+  - holeId
+  - mensPar
+  - womensPar
+- name: Tee
+  key: teeId
+  fields:
+  - teeId
+  - teeName
+- name: Location
+  value_object: true
+  fields:
+  - latitude
+  - longitude
+- name: RoundStats
+  operations:
+  - handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+  composition:
+  - DrivingStrokesGainedBreakdown
+  - ApproachStrokesGainedBreakdown
+  - ShortStrokesGainedBreakdown
+  - PuttStrokesGainedBreakdown
+  fields:
+  - overall
+  - driving
+  - approach
+  - short
+  - putt
+- name: HoleStat
+  fields:
+  - name
+  - succeeded
+- name: Webhook
+  root: true
+  operations:
+  - handle_get_webhooks.get./v5/webhooks
+  - handle_create_webhook.post./v5/webhooks
+  - handle_delete_webhook.delete./v5/webhooks/{webhookId}
+  key: id
+  fields:
+  - id
+  - webhookUrl
+- name: AccountDisconnectedWebhookEvent
+  key: eventId
+  fields:
+  - eventId
+  - eventType
+  - eventVersion
+  - createdAt
+  - eventBody
+relationships:
+- from: User
+  to: Round
+  type: has_many
+  via: userId
+  evidence: Round.userId; rounds are addressed under /v5/users/{userId}/rounds
+- from: User
+  to: Club
+  type: has_many
+  via: userId
+  evidence: clubs are addressed under /v5/users/{userId}/clubs
+- from: Round
+  to: Course
+  type: belongs_to
+  via: courseId + courseVersion
+  evidence: Round.courseId, Round.courseVersion, Round.courseName
+- from: Round
+  to: Tee
+  type: has_one
+  via: tee
+  evidence: Round.tee $ref Tee
+- from: RoundDetails
+  to: RoundHole
+  type: has_many
+  via: allOf composition
+- from: RoundHole
+  to: Shot
+  type: has_many
+  via: allOf composition of Shot
+- from: RoundHole
+  to: HoleStat
+  type: has_many
+  via: allOf composition of HoleStat
+- from: RoundHole
+  to: Pin
+  type: has_one
+  via: allOf composition of Pin
+- from: RoundHole
+  to: Hole
+  type: has_one
+  via: allOf composition of Hole
+- from: Shot
+  to: Club
+  type: belongs_to
+  via: clubId
+  evidence: Shot.clubId + Shot.clubType
+- from: Shot
+  to: Location
+  type: has_one
+  via: startLocation / endLocation
+- from: Course
+  to: CourseHole
+  type: has_many
+  via: holes
+- from: Course
+  to: Tee
+  type: has_many
+  via: tees
+- from: Course
+  to: Location
+  type: has_one
+  via: location
+- from: RoundStats
+  to: Round
+  type: belongs_to
+  via: roundId
+  evidence: GetOneRoundStatsResponse.roundId, courseId, courseVersion
+envelopes:
+- name: PagedResponseHelper
+  fields:
+  - paging
+  - results
+  used_by:
+  - GetRoundsResponse
+  - GetClubsResponse
+  - GetCoursesResponse
+enumerations:
+- name: ClubType
+  type: string
+- name: Terrain
+  type: string
+- name: WebhookEventType
+  type: string
+  values:
+  - postRound
+  - patchRound
+  - deleteRound
+  - accountDisconnected
+notes:
+- >-
+  Every id-bearing relationship is expressed by path nesting or by an *Id field; the spec uses no hypermedia
+  links, so traversal is client-assembled.
+- >-
+  Course is the only entity reachable without a user token, which makes the course/hole/tee geometry the
+  publicly queryable slice of this graph.
+cross_links:
+  openapi: openapi/arccos-golf-on-course-data-api-openapi.yml
+  conventions: conventions/arccos-golf-conventions.yml

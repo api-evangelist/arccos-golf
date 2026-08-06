@@ -1,0 +1,81 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://api.arccosgolf.com/swagger.json — securityDefinitions.AccessCodeAuth.scopes plus the published
+  "Scopes" section of info.description
+docs: https://api.arccosgolf.com/swagger
+model: >-
+  Scopes gate access to endpoints. A scope that was not requested in the initial authorization request cannot be
+  added retroactively — the user must re-authorize the client. Arccos controls which scopes a given client is
+  permitted to request at all. Every scope except openid is namespaced as `arccos/<operation>:<resource>`.
+schemes:
+- name: AccessCodeAuth
+  source: openapi/arccos-golf-on-course-data-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://signin.arccosgolf.com/login
+    tokenUrl: https://api.arccosgolf.com/oauth2/token
+scopes:
+- scope: openid
+  description: Required for all endpoints that have userId in the path
+  flows:
+  - authorizationCode
+  required_for:
+  - handle_get_one_user.get./v5/users/{userId}
+  - handle_search_rounds.get./v5/users/{userId}/rounds
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  - handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+  - handle_search_clubs.get./v5/users/{userId}/clubs
+  - handle_get_one_club.get./v5/users/{userId}/clubs/{clubId}
+  note: >-
+    Also the scope that causes an id_token to be issued; its custom:arccosUserId claim is the {userId} path value.
+  sources:
+  - openapi/arccos-golf-on-course-data-api-openapi.yml
+  - https://api.arccosgolf.com/swagger.json
+- scope: arccos/read:users
+  description: Grants read users access
+  flows:
+  - authorizationCode
+  operations:
+  - handle_get_one_user.get./v5/users/{userId}
+  sources:
+  - openapi/arccos-golf-on-course-data-api-openapi.yml
+- scope: arccos/read:rounds
+  description: Grants read rounds access
+  flows:
+  - authorizationCode
+  operations:
+  - handle_search_rounds.get./v5/users/{userId}/rounds
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  - handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+  sources:
+  - openapi/arccos-golf-on-course-data-api-openapi.yml
+- scope: arccos/read:clubs
+  description: Grants read clubs access
+  flows:
+  - authorizationCode
+  operations:
+  - handle_search_clubs.get./v5/users/{userId}/clubs
+  - handle_get_one_club.get./v5/users/{userId}/clubs/{clubId}
+  sources:
+  - openapi/arccos-golf-on-course-data-api-openapi.yml
+unscoped_operations:
+- operations:
+  - handle_search_courses.get./v5/courses
+  - handle_get_one_course.get./v5/courses/{courseId}
+  - handle_get_one_course_version.get./v5/courses/{courseId}/versions/{courseVersion}
+  note: Course-catalog reads declare no security requirement and were verified callable anonymously on 2026-08-06.
+- operations:
+  - handle_get_webhooks.get./v5/webhooks
+  - handle_create_webhook.post./v5/webhooks
+  - handle_delete_webhook.delete./v5/webhooks/{webhookId}
+  note: >-
+    Webhook registration uses HTTP Basic client credentials (BasicAuth), not the OAuth scope model — these are
+    client-level, not user-delegated, operations.
+gaps:
+- No write scopes are published; the delegated surface is read-only.
+- >-
+  There is no public scope-reference page separate from the Swagger UI; the scope list is only discoverable from
+  the spec's securityDefinitions and the "Authorize" dialog.
+cross_links:
+  authentication: authentication/arccos-golf-authentication.yml

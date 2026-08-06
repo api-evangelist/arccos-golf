@@ -1,0 +1,129 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://api.arccosgolf.com/swagger.json — the "Webhooks" section of info.description, the
+  GET/POST/DELETE /v5/webhooks operations, and the Webhook / CreateWebhookRequest / WebhookEventType /
+  AccountDisconnectedWebhookEvent definitions
+asyncapi_published: false
+asyncapi_note: >-
+  Arccos publishes no AsyncAPI document. This is a faithful catalog of the webhook surface as documented in the
+  Swagger document; the event payload fields below are only those Arccos names in its own text or schema. Nothing
+  here is inferred or invented — where a payload is described by field list only, that is all that is recorded.
+transport: HTTPS POST
+content_type: application/json
+delivery:
+  semantics: at-least-once
+  ordering: not guaranteed between event types
+  idempotency_key: eventId
+  duplicate_causes:
+  - Retries of the same event redeliver the same eventId.
+  - >-
+    Retries fan out per SQS message — when a client registers multiple webhook URLs and one fails, healthy URLs
+    can be re-POSTed with the same eventId.
+  - Repeated user disconnect actions produce distinct events for the same account.
+  consumer_guidance:
+  - Dedupe by eventId.
+  - Make cleanup additionally idempotent by (userId, clientId).
+  - Respond 2xx after durable receipt; do downstream work asynchronously.
+  - Tolerate duplicates and delays.
+security:
+  signed: false
+  signature_scheme: null
+  transport_security: HTTPS required
+  guidance:
+  - Use a dedicated high-entropy webhook URL/path and keep it private.
+  - Verify that incoming requests arrived on the exact path you registered.
+  future: HMAC signing and secret rotation are named as future contract upgrades, not part of the v1 contract.
+  pii: The accountDisconnected webhook carries no tokens, no email and no user PII.
+management:
+  register:
+    operationId: handle_create_webhook.post./v5/webhooks
+    method: POST
+    path: /v5/webhooks
+    auth: BasicAuth
+    request_schema: CreateWebhookRequest
+    request_fields:
+    - webhookUrl
+  list:
+    operationId: handle_get_webhooks.get./v5/webhooks
+    method: GET
+    path: /v5/webhooks
+    auth: BasicAuth
+    response_schema: GetWebhooksResponse
+    item_fields:
+    - id
+    - webhookUrl
+  delete:
+    operationId: handle_delete_webhook.delete./v5/webhooks/{webhookId}
+    method: DELETE
+    path: /v5/webhooks/{webhookId}
+    auth: BasicAuth
+events:
+- name: postRound
+  description: A round was posted for a user.
+  payload_fields:
+  - userId
+  - roundId
+  - courseId
+  - courseVersion
+  - isEnded
+  follow_up:
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  - handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+- name: patchRound
+  description: An existing round was updated.
+  payload_fields:
+  - userId
+  - roundId
+  - courseId
+  - courseVersion
+  - isEnded
+  follow_up:
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+- name: deleteRound
+  description: A round was deleted.
+  payload_fields:
+  - userId
+  - roundId
+- name: accountDisconnected
+  description: >-
+    A user disconnected this client from Arccos in the Arccos UI. On receipt, stop using stored Arccos tokens for
+    the given userId and disable local access for that connection.
+  envelope_fields:
+  - eventId
+  - eventType
+  - eventVersion
+  - createdAt
+  - eventBody
+  body_fields:
+  - userId
+  - clientId
+  - disconnectedAt
+  - reason
+  reason_values:
+  - user_disconnected
+  event_version: 1
+  example: |
+    {
+      "eventId": "uuid",
+      "eventType": "accountDisconnected",
+      "eventVersion": 1,
+      "createdAt": "2026-05-28T18:42:13.123Z",
+      "eventBody": {
+        "userId": "arccos-user-id",
+        "clientId": "cognito-client-id",
+        "disconnectedAt": "2026-05-28T18:42:13.123Z",
+        "reason": "user_disconnected"
+      }
+    }
+  example_source: https://api.arccosgolf.com/swagger.json (verbatim from the published docs)
+gaps:
+- >-
+  Only the accountDisconnected event has a published envelope and schema (AccountDisconnectedWebhookEvent); the
+  three round events are documented as field lists in prose, with no schema in the spec.
+- No AsyncAPI or JSON Schema is published for the round events.
+- Webhook v1 payloads are unsigned, so consumers cannot verify origin beyond URL secrecy.
+cross_links:
+  openapi: openapi/arccos-golf-on-course-data-api-openapi.yml
+  conventions: conventions/arccos-golf-conventions.yml
+  lifecycle: lifecycle/arccos-golf-lifecycle.yml

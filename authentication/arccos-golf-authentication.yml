@@ -1,0 +1,90 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://api.arccosgolf.com/swagger.json (info.description — published Authentication section) +
+  openapi/arccos-golf-on-course-data-api-openapi.yml securityDefinitions
+docs: https://api.arccosgolf.com/swagger
+summary:
+  types:
+  - oauth2
+  - http
+  oauth2_flows:
+  - authorizationCode
+  access_model: >-
+    Access to the On-Course Data API is restricted. Arccos issues a client id and (optionally) a client secret to
+    approved third parties; the ability to request each scope on behalf of a user is granted per client by Arccos.
+    Client registration is not self-serve — the published contact is john@arccosgolf.com.
+  anonymous_operations:
+  - handle_search_courses.get./v5/courses
+  - handle_get_one_course.get./v5/courses/{courseId}
+  - handle_get_one_course_version.get./v5/courses/{courseId}/versions/{courseVersion}
+  anonymous_note: >-
+    The three course-catalog operations declare no security requirement in the spec, and a probe on 2026-08-06
+    confirmed GET https://api.arccosgolf.com/v5/courses?name=Pebble&limit=2 returns 200 with real course data and
+    no Authorization header. Every other path returns 401 {"error":{"code":40101,...}} with
+    WWW-Authenticate: Bearer realm="arccos".
+schemes:
+- name: AccessCodeAuth
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://signin.arccosgolf.com/login
+    tokenUrl: https://api.arccosgolf.com/oauth2/token
+    revocationUrl: https://api.arccosgolf.com/oauth2/revoke
+    redirectUrl: https://api.arccosgolf.com/oauth2-redirect.html
+    scopes: 4
+    grant_types:
+    - authorization_code
+    - refresh_token
+    token_request_encoding: application/x-www-form-urlencoded
+    client_authentication: client_id (+ client_secret when issued)
+  applies_to: users, rounds, round stats and clubs operations
+  sources:
+  - openapi/arccos-golf-on-course-data-api-openapi.yml
+  - https://api.arccosgolf.com/swagger.json
+- name: BasicAuth
+  type: http
+  scheme: basic
+  applies_to: the /v5/webhooks registration operations (GET, POST, DELETE)
+  sources:
+  - openapi/arccos-golf-on-course-data-api-openapi.yml
+tokens:
+- name: id_token
+  purpose: >-
+    Returned only when the openid scope is requested. Carries basic user information; explicitly documented as NOT
+    usable to authenticate requests. Its custom:arccosUserId claim supplies the {userId} path parameter used by
+    almost every operation.
+  usable_for_requests: false
+- name: access_token
+  purpose: 'Bearer token presented as `Authorization: Bearer {access_token}` on authenticated requests.'
+  usable_for_requests: true
+  lifetime: short-lived; the published docs leave the exact TTL as "X hours"
+- name: refresh_token
+  purpose: >-
+    Exchanged at the token endpoint (grant_type=refresh_token) for a fresh token set; revocable at
+    /oauth2/revoke either by token or by arccos_user_id.
+  usable_for_requests: false
+  lifetime: the published docs leave the exact TTL as "X days"
+notes:
+- Scopes cannot be added retroactively — a user must re-authorize the client for any scope not requested initially.
+- The openid scope is mandatory for every operation whose path contains {userId}.
+- >-
+  The identity provider behind signin.arccosgolf.com is an Amazon Cognito hosted UI (the webhook
+  accountDisconnected payload names its client identifier a "cognito-client-id"); a bare GET of
+  https://signin.arccosgolf.com/login returns 400 without client_id/response_type parameters.
+storefront_authentication:
+  note: >-
+    Separate and unrelated to the golf-data API. The Shopify storefront at www.arccosgolf.com publishes an
+    OpenID Connect discovery document delegating customer-account auth to Shopify.
+  issuer: https://shopify.com/authentication/7805525
+  discovery: well-known/arccos-golf-openid-configuration.json
+  scopes_supported:
+  - openid
+  - email
+  - customer-account-api:full
+  - customer-account-mcp-api:full
+cross_links:
+  scopes: scopes/arccos-golf-scopes.yml
+  conventions: conventions/arccos-golf-conventions.yml
+  errors: errors/arccos-golf-problem-types.yml
+  well_known: well-known/arccos-golf-well-known.yml

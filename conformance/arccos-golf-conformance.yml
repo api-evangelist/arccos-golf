@@ -1,0 +1,156 @@
+generated: '2026-08-06'
+method: derived
+source: >-
+  openapi/arccos-golf-on-course-data-api-openapi.yml, well-known/*.json, mcp/arccos-golf-ucp-mcp-tools.json and
+  live probes of api.arccosgolf.com / www.arccosgolf.com on 2026-08-06; docs searched for compliance claims
+summary: >-
+  Standards posture derived from what Arccos actually publishes. OAuth 2.0 is genuinely implemented on the data
+  API; OIDC appears twice, once as the openid scope on the data API and once as a Shopify-delegated discovery
+  document on the storefront. The storefront implements the Universal Commerce Protocol and MCP. Error handling,
+  rate limiting and webhook signing are the visible gaps.
+standards:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence: >-
+    securityDefinitions.AccessCodeAuth declares an accessCode (authorization code) flow with
+    authorizationUrl https://signin.arccosgolf.com/login and tokenUrl https://api.arccosgolf.com/oauth2/token;
+    the published docs describe authorization_code and refresh_token grants over
+    application/x-www-form-urlencoded, plus a /oauth2/revoke endpoint (RFC 7009 shape).
+- id: oidc
+  name: OpenID Connect
+  conforms: partial
+  evidence: >-
+    The data API issues an id_token when the openid scope is requested and documents the custom:arccosUserId
+    claim, but publishes no /.well-known/openid-configuration on api.arccosgolf.com or signin.arccosgolf.com
+    (both 401/404 respectively). The storefront www.arccosgolf.com does serve a full OIDC discovery document, but
+    it belongs to Shopify customer accounts (issuer https://shopify.com/authentication/7805525), not to Arccos.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: partial
+  evidence: >-
+    Present on www.arccosgolf.com (/.well-known/oauth-authorization-server, 200, Shopify-issued). Absent for the
+    Arccos data API — api.arccosgolf.com returns its blanket 401 for that path.
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: partial
+  evidence: >-
+    /.well-known/oauth-protected-resource returns 200 on www.arccosgolf.com naming Shopify as the authorization
+    server. Nothing equivalent on the API host.
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage
+  conforms: true
+  evidence: >-
+    Documented `Authorization: Bearer {access_token}`, and unauthenticated requests return
+    `WWW-Authenticate: Bearer realm="arccos"` (observed 2026-08-06).
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors use a proprietary {"error":{"code":40101,"description":"..."}} envelope with content-type
+    application/json; no application/problem+json and no type/title/instance members.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on www.arccosgolf.com and 401 on api.arccosgolf.com.
+- id: rfc8594
+  name: Sunset HTTP Header
+  conforms: false
+  evidence: No Sunset or Deprecation headers observed; no deprecation policy is published.
+- id: pagination
+  name: Consistent pagination
+  conforms: true
+  evidence: >-
+    limit/offset query parameters on all three search operations with a shared PagedResponseHelper envelope
+    {results, paging{limit, offset}}; verified live on GET /v5/courses?limit=1. No cursor and no total count.
+- id: idempotency
+  name: Idempotency guarantees
+  conforms: partial
+  evidence: >-
+    No request-level Idempotency-Key header. Webhook delivery is explicitly at-least-once with eventId documented
+    as the stable idempotency key across retries and consumers instructed to dedupe by eventId and by
+    (userId, clientId). See conventions/arccos-golf-conventions.yml.
+- id: openapi
+  name: OpenAPI / Swagger
+  conforms: partial
+  evidence: >-
+    A real Swagger 2.0 document is served at https://api.arccosgolf.com/swagger.json (12 operations, 36
+    definitions, securityDefinitions, per-operation scopes). It is not OpenAPI 3.x, declares no host/basePath, no
+    top-level tags block, and no non-2xx responses.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: No AsyncAPI document is published; the webhook surface is documented only in prose plus one schema.
+- id: webhooks
+  name: Outbound webhooks
+  conforms: true
+  evidence: >-
+    Registerable HTTPS webhooks (/v5/webhooks) with four documented event types and an explicit delivery
+    contract. Payloads are unsigned in v1 (HMAC signing named as a future upgrade).
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    https://www.arccosgolf.com/api/ucp/mcp answers JSON-RPC tools/list with 13 tools and full JSON Schema
+    inputSchemas (200, anonymous, 2026-08-06).
+- id: ucp
+  name: Universal Commerce Protocol
+  conforms: true
+  evidence: >-
+    /.well-known/ucp returns a merchant profile declaring protocol versions 2026-04-08 and 2026-01-23 with
+    shopping cart/checkout/fulfillment/discount/order/catalog capabilities.
+- id: llmstxt
+  name: llms.txt
+  conforms: true
+  evidence: https://www.arccosgolf.com/llms.txt returns 200 text/markdown (mirrored at /agents.md).
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on www and 401 on api.
+- id: json-api
+  name: 'JSON:API'
+  conforms: false
+  evidence: Responses are plain JSON with a bespoke paging envelope; no JSON:API media type or document structure.
+- id: graphql
+  name: GraphQL
+  conforms: false
+  evidence: POST/GET https://api.arccosgolf.com/graphql returns the generic 401 auth error; no GraphQL surface is published.
+regulatory_and_privacy:
+  note: >-
+    Arccos handles golfer location and performance data. It publishes consumer privacy machinery, but no
+    security/compliance certification program (SOC 2, ISO 27001) was found on any public page.
+  published:
+  - name: Privacy Policy
+    url: https://www.arccosgolf.com/policies/privacy-policy
+    status: 200
+  - name: Terms of Service
+    url: https://www.arccosgolf.com/policies/terms-of-service
+    status: 200
+  - name: Cookie Policy
+    url: https://www.arccosgolf.com/pages/cookie-policy
+    status: 200
+  - name: GDPR privacy requests
+    url: https://www.arccosgolf.com/pages/gdpr-privacy-requests
+  - name: CCPA compliance
+    url: https://www.arccosgolf.com/pages/ccpa-compliance
+  - name: US privacy requests
+    url: https://www.arccosgolf.com/pages/us-privacy-requests
+  - name: End User License Agreement
+    url: https://www.arccosgolf.com/pages/end-user-license-agreement
+  certifications_published: []
+  trust_center: false
+domain_security_summary:
+  see: security/arccos-golf-domain-security.yml
+  tls: TLSv1.3 on both www and api
+  hsts: 'present on www.arccosgolf.com (max-age 7889238); absent on api.arccosgolf.com'
+  dnssec: false
+  caa: none
+  spf: true
+  dmarc: 'present, policy p=none'
+gaps:
+- No security.txt and no published vulnerability-disclosure or bug-bounty program.
+- No published certifications or trust center.
+- No RFC 9457 error format and no documented error-code registry.
+- No rate-limit policy or headers on the data API.
+- Webhook payloads are unsigned.
+- No HSTS on the API host; DNSSEC not enabled; no CAA records; DMARC at p=none only.

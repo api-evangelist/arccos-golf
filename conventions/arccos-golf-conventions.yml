@@ -1,0 +1,135 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://api.arccosgolf.com/swagger.json (info.description + paths/definitions) and live probes of
+  https://api.arccosgolf.com/v5/courses on 2026-08-06
+summary: >-
+  Cross-cutting request/response semantics for the Arccos On-Course Data API, taken from the published Swagger
+  document and from responses observed on the anonymous course-catalog endpoints. Request-level idempotency keys
+  are NOT offered; idempotency in this API is a webhook-delivery contract keyed on eventId.
+authentication:
+  styles:
+  - oauth2_authorization_code
+  - http_basic
+  bearer_header: 'Authorization: Bearer {access_token}'
+  challenge_header: 'WWW-Authenticate: Bearer realm="arccos"'
+  see: authentication/arccos-golf-authentication.yml
+versioning:
+  style: path
+  current: v5
+  example: https://api.arccosgolf.com/v5/courses
+  policy: >-
+    Published statement — "This is a living project. While backward compatibility will be preserved, updates will
+    be regular." No dated version header, no Sunset/Deprecation (RFC 8594) headers observed.
+  see: lifecycle/arccos-golf-lifecycle.yml
+pagination:
+  style: limit-offset
+  params:
+  - name: limit
+    in: query
+    type: integer
+    description: maximum number of results to get
+  - name: offset
+    in: query
+    type: integer
+    description: number of results to get per request (as documented in the spec)
+  response_envelope:
+    schema: PagedResponseHelper
+    fields:
+    - results
+    - paging
+    paging_fields:
+    - limit
+    - offset
+  observed: '{"results":[],"paging":{"limit":1,"offset":0}} — GET /v5/courses?limit=1, 2026-08-06'
+  default_limit: 10
+  applies_to:
+  - handle_search_rounds.get./v5/users/{userId}/rounds
+  - handle_search_courses.get./v5/courses
+  - handle_search_clubs.get./v5/users/{userId}/clubs
+  no_cursor: true
+  no_total_count: The paging object carries limit and offset only; no total or next-page cursor is returned.
+filtering:
+- operation: handle_search_courses.get./v5/courses
+  params:
+  - name: name
+    note: partial course-name match
+- operation: handle_search_clubs.get./v5/users/{userId}/clubs
+  params:
+  - name: status
+    note: 'paired, unpaired or deleted; defaults to paired'
+  - name: numberOfShots
+    note: number of shots to consider when computing club distances (5, 10, 15, 20, ...)
+- operation: handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+  params:
+  - name: goalHandicap
+    note: -30 to 10; shapes the goal column of the returned traditional stats
+field_expansion:
+  supported: false
+  note: No sparse-fieldset, expand or field-selection parameter is published; responses are fixed shapes.
+metadata:
+  supported: false
+idempotency:
+  request_level:
+    supported: false
+    note: >-
+      No Idempotency-Key header is published, and the only non-GET operations (webhook create/delete) are
+      naturally scoped by the webhookUrl / webhookId they carry.
+  webhook_delivery:
+    supported: true
+    delivery_semantics: at-least-once
+    idempotency_key: eventId
+    retention: not published
+    published_rules:
+    - eventId is the idempotency key for a published webhook event and remains stable across delivery retries.
+    - Consumers must dedupe by eventId.
+    - >-
+      Retries fan out per SQS message — if a client registers multiple webhook URLs and one fails, healthy URLs
+      can receive duplicate POSTs carrying the same eventId.
+    - >-
+      Repeated disconnect actions can produce a NEW event for the same account, so cleanup should additionally be
+      made idempotent by (userId, clientId).
+    - Ordering between webhook event types is not guaranteed.
+    - Respond 2xx after durable receipt and do downstream cleanup asynchronously.
+    source: https://api.arccosgolf.com/swagger.json — "Webhooks" section of info.description
+    see: asyncapi/arccos-golf-webhooks.yml
+request_tracing:
+  header: apigw-requestid
+  note: >-
+    Every response carries an AWS API Gateway request id plus CloudFront x-amz-cf-id headers. Neither is
+    documented as a support correlation id, but both are observable on every call.
+  observed: '2026-08-06'
+error_envelope:
+  format: proprietary
+  rfc9457: false
+  content_type: application/json
+  shape: '{"error":{"code":<int>,"description":<string>}}'
+  observed: '{"error":{"code":40101,"description":"No Authorization header passed."}} — HTTP 401'
+  note: >-
+    The code is a numeric compound of the HTTP status and an internal ordinal (40101 = 401 / 01). No error
+    responses are declared in the Swagger document — every operation documents only a 200.
+  see: errors/arccos-golf-problem-types.yml
+rate_limiting:
+  documented: false
+  headers_observed: none
+  note: >-
+    No rate-limit policy is published for the On-Course Data API and no X-RateLimit-*/RateLimit-* headers appear
+    on responses. The storefront llms.txt does state that the UCP MCP endpoint is rate-limited per IP with 429
+    back-off, but that is the Shopify commerce surface, not this API.
+content_types:
+  responses: application/json
+  token_endpoint_request: application/x-www-form-urlencoded
+data_conventions:
+  timestamps: ISO 8601 UTC (e.g. 2026-05-28T18:42:13.123Z in the accountDisconnected payload)
+  distances: metric — shotDistance, altitude and metersToCenterOfGreen fields are metres
+  geo: decimal latitude/longitude on the Location object
+  course_identity: >-
+    Courses are identified by the pair (courseId, courseVersion); a course version pins the hole and tee geometry
+    a round was played against.
+cross_links:
+  authentication: authentication/arccos-golf-authentication.yml
+  scopes: scopes/arccos-golf-scopes.yml
+  errors: errors/arccos-golf-problem-types.yml
+  lifecycle: lifecycle/arccos-golf-lifecycle.yml
+  webhooks: asyncapi/arccos-golf-webhooks.yml
+  data_model: data-model/arccos-golf-data-model.yml

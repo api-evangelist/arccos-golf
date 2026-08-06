@@ -1,0 +1,71 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  https://api.arccosgolf.com/swagger.json (info + paths) and probes of status./changelog surfaces on
+  arccosgolf.com, 2026-08-06
+versioning:
+  scheme: path-segment
+  current: v5
+  mechanism: The major version is the first path segment (/v5/...). No version header is documented or observed.
+  spec_version: '1'
+  spec_note: The Swagger document reports info.version "1" while every path it declares is under /v5.
+  compatibility_statement: >-
+    "This is a living project. While backward compatibility will be preserved, updates will be regular."
+    — published in the Introduction of the API document.
+  docs: https://api.arccosgolf.com/swagger
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  notes: >-
+    No deprecation or sunset policy is published, and no operation, parameter or definition in the Swagger
+    document carries a deprecated flag. The only forward-compatibility guidance is on the webhook payload
+    contract — consumers are told to ignore unknown fields and to ignore unsupported future eventVersion values
+    unless they have explicitly opted in to that newer contract.
+webhook_contract_versioning:
+  field: eventVersion
+  current: 1
+  rules:
+  - Webhook v1 payloads are unsigned; HMAC signing and secret rotation are named as future contract upgrades.
+  - Ignore unknown fields and unsupported future top-level fields.
+  - Ignore unsupported future eventVersion values unless explicitly opted in.
+  source: https://api.arccosgolf.com/swagger.json — "Webhooks" section
+changelog:
+  published: false
+  notes: No dated API changelog or release-notes page was found on arccosgolf.com or in the GitHub organization.
+sla:
+  url: null
+  public_uptime_target: null
+status_page:
+  published: false
+  probed:
+  - url: https://status.arccosgolf.com
+    result: NXDOMAIN (host does not resolve)
+    checked: '2026-08-06'
+  notes: >-
+    No status page is published for the API. The api.arccosgolf.com/health path returns the generic 401 auth
+    error rather than a public health document.
+support:
+  channel: email
+  contact: john@arccosgolf.com
+  subject_hint: On Course Data API Inquiry
+  consumer_support: https://support.arccosgolf.com/hc/en-us
+  source: https://api.arccosgolf.com/swagger.json — "Support" section
+  notes: >-
+    The API document explicitly frames the API as "a work in progress" with changes made on a rolling basis and
+    routes all questions to a single named engineer's mailbox.
+access_lifecycle:
+  onboarding: >-
+    Restricted. Arccos issues a client id and optional client secret to approved partners; scope-request
+    privileges are granted per client.
+  offboarding: >-
+    Users can disconnect a client from the Arccos UI, which fires an accountDisconnected webhook. Clients are
+    instructed to stop using stored tokens for that userId and disable local access. Refresh tokens can also be
+    revoked at https://api.arccosgolf.com/oauth2/revoke, optionally for every token belonging to one
+    arccos_user_id.
+cross_links:
+  conventions: conventions/arccos-golf-conventions.yml
+  webhooks: asyncapi/arccos-golf-webhooks.yml
+  authentication: authentication/arccos-golf-authentication.yml

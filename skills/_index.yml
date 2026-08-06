@@ -1,0 +1,58 @@
+generated: '2026-08-06'
+method: generated
+source: >-
+  openapi/arccos-golf-on-course-data-api-openapi.yml and the published Authentication/Webhooks sections of
+  https://api.arccosgolf.com/swagger.json; every operationId below is verified present in the spec
+api: Arccos On-Course Data API
+base_url: https://api.arccosgolf.com/
+note: >-
+  Arccos publishes no skills or AGENTS.md of its own for the golf-data API. The storefront's /llms.txt and
+  /agents.md cover Shopify commerce only. These four skills are API Evangelist-generated and grounded entirely
+  in real operationIds from the published Swagger document.
+skills:
+- name: arccos-golf-connect-a-golfer
+  file: skills/arccos-golf-connect-a-golfer.md
+  description: OAuth 2.0 authorization-code connect, id_token → arccosUserId, profile read, refresh and revoke.
+  operations:
+  - handle_get_one_user.get./v5/users/{userId}
+  scopes:
+  - openid
+  - arccos/read:users
+- name: arccos-golf-pull-round-and-stats
+  file: skills/arccos-golf-pull-round-and-stats.md
+  description: Page rounds, pull per-hole shot detail, fetch Strokes Gained and traditional round stats.
+  operations:
+  - handle_search_rounds.get./v5/users/{userId}/rounds
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  - handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+  - handle_get_one_course_version.get./v5/courses/{courseId}/versions/{courseVersion}
+  scopes:
+  - openid
+  - arccos/read:rounds
+- name: arccos-golf-subscribe-to-round-webhooks
+  file: skills/arccos-golf-subscribe-to-round-webhooks.md
+  description: Register and tear down HTTPS webhooks, consume the four event types idempotently by eventId.
+  operations:
+  - handle_create_webhook.post./v5/webhooks
+  - handle_get_webhooks.get./v5/webhooks
+  - handle_delete_webhook.delete./v5/webhooks/{webhookId}
+  - handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  auth: HTTP Basic (client-level)
+- name: arccos-golf-search-the-course-catalog
+  file: skills/arccos-golf-search-the-course-catalog.md
+  description: Anonymous course search and versioned course/hole/tee lookup — the credential-free slice of the API.
+  operations:
+  - handle_search_courses.get./v5/courses
+  - handle_get_one_course.get./v5/courses/{courseId}
+  - handle_get_one_course_version.get./v5/courses/{courseId}/versions/{courseVersion}
+  auth: none
+not_covered:
+- operationId: handle_search_clubs.get./v5/users/{userId}/clubs
+  reason: Club/smart-distance reads are a single-call surface; no multi-step flow to package.
+- operationId: handle_get_one_club.get./v5/users/{userId}/clubs/{clubId}
+  reason: Single-call surface.
+cross_links:
+  conventions: conventions/arccos-golf-conventions.yml
+  authentication: authentication/arccos-golf-authentication.yml
+  errors: errors/arccos-golf-problem-types.yml
+  webhooks: asyncapi/arccos-golf-webhooks.yml

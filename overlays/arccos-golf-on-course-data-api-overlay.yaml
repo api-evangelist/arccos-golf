@@ -1,0 +1,107 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Arccos On-Course Data API
+  version: 1.0.0
+extends: ../openapi/arccos-golf-on-course-data-api-openapi.yml
+x-generated: '2026-08-06'
+x-method: generated
+x-source: >-
+  Derived from openapi/arccos-golf-on-course-data-api-openapi.yml plus live probes of api.arccosgolf.com on
+  2026-08-06. Captures API Evangelist enrichment only; the original Swagger document is never mutated.
+actions:
+- target: $.info
+  description: Record where the source document was harvested from and its real base URL.
+  update:
+    x-source-url: https://api.arccosgolf.com/swagger.json
+    x-harvested: '2026-08-06'
+    x-base-url: https://api.arccosgolf.com/
+    x-contact-email: john@arccosgolf.com
+    x-access-model: restricted — client id and optional client secret issued by Arccos to approved partners
+- target: $
+  description: >-
+    The published document declares schemes but no host/basePath. Record the observed production host so the
+    document is callable as harvested.
+  update:
+    host: api.arccosgolf.com
+    x-verified-host: '2026-08-06'
+- target: $
+  description: Declare the tag set the operations already use, which the source document omits.
+  update:
+    tags:
+    - name: Users
+      description: The authenticated golfer's profile.
+    - name: Rounds
+      description: Rounds played, round detail with per-hole shots, and computed round stats.
+    - name: Clubs
+      description: The golfer's paired clubs and their computed smart distances.
+    - name: Courses
+      description: Public course catalog with versioned hole and tee geometry.
+    - name: Webhooks
+      description: Client-level registration of HTTPS endpoints for round and account-disconnect events.
+- target: $.paths['/v5/courses'].get
+  description: Record that this operation was verified callable with no credentials.
+  update:
+    x-anonymous: true
+    x-verified:
+      fetched: '2026-08-06'
+      url: https://api.arccosgolf.com/v5/courses?name=Pebble&limit=2
+      http_status: 200
+- target: $.paths['/v5/courses/{courseId}'].get
+  description: Mark the anonymous course-lookup operation.
+  update:
+    x-anonymous: true
+- target: $.paths['/v5/courses/{courseId}/versions/{courseVersion}'].get
+  description: Mark the anonymous course-version lookup operation.
+  update:
+    x-anonymous: true
+- target: $.paths..[?(@.responses)]
+  description: >-
+    Every operation in the source document declares only a 200. Attach the error envelope actually returned by
+    the API so consumers can code against it.
+  update:
+    x-error-envelope:
+      media_type: application/json
+      shape: '{"error":{"code":<integer>,"description":<string>}}'
+      observed:
+        http_status: 401
+        code: 40101
+        description: No Authorization header passed.
+        challenge: 'WWW-Authenticate: Bearer realm="arccos"'
+      catalog: errors/arccos-golf-problem-types.yml
+- target: $.paths['/v5/webhooks'].get
+  description: Cross-link the webhook catalog that documents the event contract described in prose.
+  update:
+    x-webhook-catalog: asyncapi/arccos-golf-webhooks.yml
+    x-event-types:
+    - postRound
+    - patchRound
+    - deleteRound
+    - accountDisconnected
+    x-delivery: at-least-once; dedupe by eventId
+- target: $.definitions.Course
+  description: Note the composite identity of a course.
+  update:
+    x-composite-key:
+    - courseId
+    - courseVersion
+- target: $.definitions.User
+  description: Flag the PII-bearing entity for agent and governance tooling.
+  update:
+    x-pii: true
+    x-pii-fields:
+    - firstName
+    - lastName
+    - email
+    - gender
+- target: $.definitions.PagedResponseHelper
+  description: Record the pagination contract confirmed against the live API.
+  update:
+    x-pagination:
+      style: limit-offset
+      params:
+      - limit
+      - offset
+      default_limit: 10
+      total_count: false
+      cursor: false
+      observed: '{"results":[],"paging":{"limit":1,"offset":0}}'

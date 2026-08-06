@@ -1,0 +1,102 @@
+generated: '2026-08-06'
+method: derived
+source: >-
+  mcp/arccos-golf-ucp-mcp-tools.json (live tools/list, 2026-08-06) bound against
+  openapi/arccos-golf-on-course-data-api-openapi.yml
+headline: >-
+  Arccos Golf's two machine surfaces do not overlap at all. The MCP server is the Shopify UCP commerce endpoint
+  on the storefront host; the OpenAPI is the On-Course Data API on the API host. Zero of the 13 MCP tools bind to
+  any of the 12 REST operations, and none of the REST operations is exposed to agents through MCP. Recorded here
+  because that divergence is the finding — an agent that discovers Arccos through /llms.txt can buy a sensor but
+  cannot read a single round, club or course.
+surfaces:
+- kind: openapi
+  name: Arccos On-Course Data API
+  spec: openapi/arccos-golf-on-course-data-api-openapi.yml
+  base_url: https://api.arccosgolf.com/
+  operations: 12
+  gated: >-
+    partially — 9 of 12 operations require OAuth 2.0 (authorization code) or HTTP Basic; the 3 course-catalog
+    reads were verified anonymously callable on 2026-08-06
+- kind: mcp
+  name: Arccos Golf Storefront UCP MCP Server
+  url: https://www.arccosgolf.com/api/ucp/mcp
+  tools: 13
+  gated: false
+  gated_note: tools/list returns full inputSchemas anonymously; completing a checkout requires buyer approval
+- kind: graphql
+  present: false
+crosswalk: []
+mcp_only:
+- tool: search_catalog
+  reason: Shopify storefront commerce; the On-Course Data API has no product/catalog resource.
+- tool: lookup_catalog
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: get_product
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: create_cart
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: get_cart
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: update_cart
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: cancel_cart
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: create_checkout
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: get_checkout
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: update_checkout
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: complete_checkout
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: cancel_checkout
+  reason: Shopify storefront commerce; no REST equivalent.
+- tool: get_order
+  reason: Shopify storefront commerce; no REST equivalent.
+rest_only:
+- operationId: handle_get_one_user.get./v5/users/{userId}
+  summary: Get One User
+  reason: No MCP tool exposes Arccos golfer data.
+- operationId: handle_search_rounds.get./v5/users/{userId}/rounds
+  summary: Get Rounds
+  reason: No MCP tool exposes Arccos golfer data.
+- operationId: handle_get_one_round.get./v5/users/{userId}/rounds/{roundId}
+  summary: Get One Round
+  reason: No MCP tool exposes Arccos golfer data.
+- operationId: handle_get_round_stats.get./v5/users/{userId}/rounds/{roundId}/stats
+  summary: Get Round Stats
+  reason: No MCP tool exposes Arccos golfer data.
+- operationId: handle_search_clubs.get./v5/users/{userId}/clubs
+  summary: Search clubs
+  reason: No MCP tool exposes Arccos golfer data.
+- operationId: handle_get_one_club.get./v5/users/{userId}/clubs/{clubId}
+  summary: Get One Club
+  reason: No MCP tool exposes Arccos golfer data.
+- operationId: handle_search_courses.get./v5/courses
+  summary: Search Courses
+  reason: >-
+    Anonymously callable and the most obviously agent-ready operation in the estate, yet exposed through no MCP
+    tool.
+- operationId: handle_get_one_course.get./v5/courses/{courseId}
+  summary: Get One Course
+  reason: No MCP tool exposes the Arccos course catalog.
+- operationId: handle_get_one_course_version.get./v5/courses/{courseId}/versions/{courseVersion}
+  summary: Get One Course Version
+  reason: No MCP tool exposes the Arccos course catalog.
+- operationId: handle_get_webhooks.get./v5/webhooks
+  summary: Get Webhooks
+  reason: Client-administrative operation; not an agent surface.
+- operationId: handle_create_webhook.post./v5/webhooks
+  summary: Create Webhook
+  reason: Client-administrative operation; not an agent surface.
+- operationId: handle_delete_webhook.delete./v5/webhooks/{webhookId}
+  summary: Delete Webhook
+  reason: Client-administrative operation; not an agent surface.
+coverage:
+  mcp_tools: 13
+  rest_operations: 12
+  bound: 0
+  mcp_only: 13
+  rest_only: 12
+  binding_rate: 0.0

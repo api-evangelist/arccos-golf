@@ -1,0 +1,55 @@
+generated: '2026-08-06'
+method: probed
+source: >-
+  Live probes of https://api.arccosgolf.com/ on 2026-08-06 (the Swagger document declares no 4xx/5xx responses,
+  so nothing could be derived from openapi/arccos-golf-on-course-data-api-openapi.yml)
+format: proprietary
+rfc9457: false
+media_type: application/json
+envelope:
+  shape: '{"error":{"code":<integer>,"description":<string>}}'
+  fields:
+  - name: error.code
+    type: integer
+    note: >-
+      Numeric compound of the HTTP status and an internal ordinal — 40101 observed on a 401. Arccos does not
+      publish the code registry, so only the codes actually observed are recorded here.
+  - name: error.description
+    type: string
+    note: Human-readable message. No type URI, title, instance or trace id is returned.
+spec_coverage:
+  operations_total: 12
+  operations_declaring_4xx_or_5xx: 0
+  note: >-
+    Every operation in the published Swagger 2.0 document declares only a "200 response". The error contract is
+    therefore undocumented in the machine-readable spec — this catalog is built from observed behaviour.
+problem_types:
+- code: 40101
+  http_status: 401
+  title: No Authorization header passed
+  description: No Authorization header passed.
+  challenge: 'WWW-Authenticate: Bearer realm="arccos"'
+  remediation: >-
+    Obtain an access token through the OAuth 2.0 authorization-code flow and send it as
+    `Authorization: Bearer {access_token}`. Webhook-registration operations use HTTP Basic client credentials
+    instead.
+  evidence:
+    fetched: '2026-08-06'
+    urls:
+    - https://api.arccosgolf.com/openapi.json
+    - https://api.arccosgolf.com/v5/nope
+    - https://api.arccosgolf.com/health
+    http_status: 401
+    body: '{"error":{"code":40101,"description":"No Authorization header passed."}}'
+  note: >-
+    This response is the API's catch-all for every unauthenticated request, including requests to paths that do
+    not exist — an unknown path under /v5/ returns 401, not 404, so a 401 is not by itself evidence that the
+    resource exists.
+gaps:
+- No error responses are declared in the OpenAPI/Swagger document.
+- No published error-code reference page exists.
+- Errors do not use RFC 9457 application/problem+json.
+- No correlation/trace identifier is surfaced in the error body (only the AWS apigw-requestid response header).
+cross_links:
+  conventions: conventions/arccos-golf-conventions.yml
+  authentication: authentication/arccos-golf-authentication.yml

@@ -1,23 +1,186 @@
 aid: arccos-golf
 name: Arccos Golf
-description: 'Arccos Golf is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Arccos Golf is the golf performance-tracking platform behind the Arccos Caddie smart sensors, smart grips and
+  the Arccos Air wearable — the Official Game Tracker of the PGA TOUR. Club-mounted sensors and the Arccos mobile
+  app automatically capture every shot on the course, then AI-driven Strokes Gained analytics, Smart Club
+  Distances, an AI rangefinder and Arccos Caddie strategy turn that shot data into per-round and per-hole
+  insight. Arccos exposes that same data to approved third parties through the Arccos On-Course Data API, a
+  Swagger 2.0-documented REST API over rounds, round stats, clubs, users and a public course/course-version
+  catalog, secured with an OAuth 2.0 authorization-code flow and per-resource read scopes, plus registerable
+  HTTPS webhooks for round and account-disconnect events. Its Shopify-hosted storefront additionally publishes
+  an llms.txt and a Universal Commerce Protocol (UCP) MCP endpoint for agent-driven commerce.
+image: https://www.arccosgolf.com/cdn/shop/files/Arccos_Logo-Inline.svg
 url: https://raw.githubusercontent.com/api-evangelist/arccos-golf/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
-apis: []
+- golf
+- sports-technology
+- wearables
+- iot
+- shot-tracking
+- sports-analytics
+- performance-analytics
+- geospatial
+- consumer-hardware
+- webhooks
+- oauth2
+- mcp
+- ecommerce
+apis:
+- name: Arccos On-Course Data API
+  description: >-
+    Restricted-access REST API that exposes the on-course data powering the Arccos apps — a golfer's rounds,
+    per-round traditional and Strokes Gained stats, paired clubs and smart club distances, user profile, and a
+    course catalog with versioned hole/tee geometry. Read access is granted per scope via an OAuth 2.0
+    authorization-code flow against signin.arccosgolf.com; clients also register HTTPS webhooks (Basic auth) to
+    receive postRound, patchRound, deleteRound and accountDisconnected events. The course search and
+    course-lookup operations are callable anonymously.
+  humanURL: https://api.arccosgolf.com/swagger
+  baseURL: https://api.arccosgolf.com/
+  tags:
+  - golf
+  - shot-tracking
+  - sports-analytics
+  - performance-analytics
+  - geospatial
+  - webhooks
+  - oauth2
+  properties:
+  - type: OpenAPI
+    url: openapi/arccos-golf-on-course-data-api-openapi.yml
+  - type: Swagger
+    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
+  - type: Documentation
+    url: https://api.arccosgolf.com/swagger
+  - type: APIReference
+    url: https://api.arccosgolf.com/swagger
+  - type: Postman
+    url: https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+  - type: SourceCode
+    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+  - type: Authentication
+    url: authentication/arccos-golf-authentication.yml
+  - type: OAuthScopes
+    url: scopes/arccos-golf-scopes.yml
+  - type: Conventions
+    url: conventions/arccos-golf-conventions.yml
+  - type: Idempotency
+    url: conventions/arccos-golf-conventions.yml
+  - type: ErrorCatalog
+    url: errors/arccos-golf-problem-types.yml
+  - type: DataModel
+    url: data-model/arccos-golf-data-model.yml
+  - type: Webhooks
+    url: asyncapi/arccos-golf-webhooks.yml
+  - type: Overlay
+    url: overlays/arccos-golf-on-course-data-api-overlay.yaml
+  - type: Lifecycle
+    url: lifecycle/arccos-golf-lifecycle.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+- name: Arccos Golf Storefront UCP MCP Server
+  description: >-
+    Universal Commerce Protocol (UCP) MCP endpoint published on the Arccos Golf Shopify storefront for
+    agent-driven commerce. An anonymous JSON-RPC tools/list returns 13 tools covering catalog search and lookup,
+    product detail, cart create/update/cancel, checkout create/get/update/complete/cancel and order lookup, each
+    with a full JSON Schema inputSchema. Discovery is at /.well-known/ucp; agent instructions are published at
+    /llms.txt and /agents.md. This is the Shopify platform commerce surface, not the Arccos golf-data API.
+  humanURL: https://www.arccosgolf.com/llms.txt
+  baseURL: https://www.arccosgolf.com/api/ucp/mcp
+  tags:
+  - mcp
+  - ecommerce
+  - agent-native
+  - ucp
+  properties:
+  - type: MCPServer
+    url: mcp/arccos-golf-mcp.yml
+  - type: MCP
+    url: https://www.arccosgolf.com/api/ucp/mcp
+  - type: ToolCrosswalk
+    url: mcp/arccos-golf-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/arccos-golf-llms.txt
+  - type: Documentation
+    url: https://www.arccosgolf.com/llms.txt
+common:
+- type: DomainSecurity
+  url: security/arccos-golf-domain-security.yml
+- type: Website
+  url: https://www.arccosgolf.com/
+- type: DeveloperPortal
+  url: https://api.arccosgolf.com/swagger
+- type: Documentation
+  url: https://api.arccosgolf.com/swagger
+- type: APIReference
+  url: https://api.arccosgolf.com/swagger
+- type: GettingStarted
+  url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+- type: Postman
+  url: https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+- type: GitHubOrganization
+  url: https://github.com/arccosgolf
+- type: Support
+  url: https://www.arccosgolf.com/pages/contact
+- type: HelpCenter
+  url: https://support.arccosgolf.com/hc/en-us
+- type: Blog
+  url: https://www.arccosgolf.com/blogs/community
+- type: SignUp
+  url: https://www.arccosgolf.com/account/register
+- type: Login
+  url: https://dashboard.arccosgolf.com/login
+- type: TermsOfService
+  url: https://www.arccosgolf.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.arccosgolf.com/policies/privacy-policy
+- type: OpenAPI
+  url: openapi/arccos-golf-on-course-data-api-openapi.yml
+- type: Authentication
+  url: authentication/arccos-golf-authentication.yml
+- type: OAuthScopes
+  url: scopes/arccos-golf-scopes.yml
+- type: Conventions
+  url: conventions/arccos-golf-conventions.yml
+- type: Idempotency
+  url: conventions/arccos-golf-conventions.yml
+- type: ErrorCatalog
+  url: errors/arccos-golf-problem-types.yml
+- type: DataModel
+  url: data-model/arccos-golf-data-model.yml
+- type: Webhooks
+  url: asyncapi/arccos-golf-webhooks.yml
+- type: Lifecycle
+  url: lifecycle/arccos-golf-lifecycle.yml
+- type: Conformance
+  url: conformance/arccos-golf-conformance.yml
+- type: WellKnown
+  url: well-known/arccos-golf-well-known.yml
+- type: LLMsTxt
+  url: llms/arccos-golf-llms.txt
+- type: MCPServer
+  url: mcp/arccos-golf-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/arccos-golf-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/arccos-golf-on-course-data-api-overlay.yaml
+- type: SecondaryMarket
+  url: https://forgeglobal.com/arccos-golf_stock/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://forgeglobal.com/arccos-golf_stock/
+x-enrichment:
+  date: '2026-08-06'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1

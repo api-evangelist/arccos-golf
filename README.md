@@ -42,5 +42,22 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Arccos Golf is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/arccos-golf_stock/
+Arccos Golf is the golf performance-tracking platform behind the Arccos Caddie smart sensors, smart grips and
+the Arccos Air wearable — the Official Game Tracker of the PGA TOUR.
+
+Arccos publishes a **Swagger 2.0** contract for the **Arccos On-Course Data API** at
+<https://api.arccosgolf.com/swagger.json> — 12 operations over rounds, round stats (Strokes Gained and
+traditional), clubs, users and a versioned course catalog, secured with an OAuth 2.0 authorization-code flow and
+`arccos/read:*` scopes, plus registerable HTTPS webhooks for `postRound`, `patchRound`, `deleteRound` and
+`accountDisconnected`. Access is restricted — Arccos issues client credentials to approved partners — but the
+three course-catalog operations are callable anonymously.
+
+The Shopify-hosted storefront at <https://www.arccosgolf.com> separately publishes an `llms.txt`, an `agents.md`,
+a Universal Commerce Protocol merchant profile at `/.well-known/ucp`, and a live MCP endpoint at `/api/ucp/mcp`
+whose `tools/list` returns 13 commerce tools anonymously.
+
+- Website: https://www.arccosgolf.com/
+- API reference: https://api.arccosgolf.com/swagger
+- Postman: https://www.postman.com/arccosgolf/workspace/arccos-public-api
+- GitHub: https://github.com/arccosgolf
+- Secondary market: https://forgeglobal.com/arccos-golf_stock/

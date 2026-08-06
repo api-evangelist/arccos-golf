@@ -1,0 +1,142 @@
+generated: '2026-08-06'
+method: searched
+source: >-
+  POST https://www.arccosgolf.com/api/ucp/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"} — HTTP 200,
+  application/json, 2026-08-06; discovery via https://www.arccosgolf.com/.well-known/ucp and
+  https://www.arccosgolf.com/llms.txt
+status: live
+name: Arccos Golf Storefront UCP MCP Server
+endpoint: https://www.arccosgolf.com/api/ucp/mcp
+transport: streamable-http (JSON-RPC over HTTP POST)
+authentication:
+  tools_list: anonymous — tools/list returned 200 with full inputSchemas and no credentials
+  transactions: >-
+    Checkout completion requires contemporaneous buyer approval; the storefront delegates customer-account auth
+    to Shopify (see well-known/arccos-golf-openid-configuration.json).
+provenance_note: >-
+  This MCP server is the Shopify platform's Universal Commerce Protocol commerce surface, published on the Arccos
+  Golf storefront host. It exposes the online store (sensors, grips, Arccos Air, accessories) — NOT the Arccos
+  On-Course Data API. There is no MCP server for the golf-data API. Recorded here because it is served from the
+  provider's own domain and is anonymously discoverable and introspectable.
+discovery:
+  ucp_profile: https://www.arccosgolf.com/.well-known/ucp
+  ucp_versions:
+  - '2026-04-08'
+  - '2026-01-23'
+  upstream_endpoint_in_profile: https://arccos-dev.myshopify.com/api/ucp/mcp
+  agent_instructions:
+  - https://www.arccosgolf.com/llms.txt
+  - https://www.arccosgolf.com/agents.md
+  openrpc_schema: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
+capabilities:
+- dev.ucp.shopping.cart
+- dev.ucp.shopping.checkout
+- dev.ucp.shopping.fulfillment
+- dev.ucp.shopping.discount
+- dev.ucp.shopping.order
+- dev.ucp.shopping.catalog.search
+- dev.ucp.shopping.catalog.lookup
+- dev.shopify.catalog
+tool_count: 13
+tools_manifest: mcp/arccos-golf-ucp-mcp-tools.json
+tools:
+- name: search_catalog
+  category: catalog
+  description: Search for products from the online store, hosted on Shopify.
+  required_input:
+  - meta
+  - catalog
+- name: lookup_catalog
+  category: catalog
+  description: Look up multiple products or variants by identifier.
+  required_input:
+  - meta
+  - catalog
+- name: get_product
+  category: catalog
+  description: Retrieve complete product detail by identifier, with a relevant set of variants.
+  required_input:
+  - meta
+  - catalog
+- name: create_cart
+  category: cart
+  description: Creates a new cart.
+  required_input:
+  - meta
+  - cart
+- name: get_cart
+  category: cart
+  description: Get the cart contents.
+  required_input:
+  - meta
+  - id
+- name: update_cart
+  category: cart
+  description: Perform updates to a cart.
+  required_input:
+  - meta
+  - cart
+  - id
+- name: cancel_cart
+  category: cart
+  description: Cancels a cart.
+  required_input:
+  - meta
+  - id
+- name: create_checkout
+  category: checkout
+  description: Creates a checkout; returns line items, totals, discounts and taxes.
+  required_input:
+  - meta
+  - checkout
+- name: get_checkout
+  category: checkout
+  description: Returns details about the checkout, including line items, totals, discounts and taxes.
+  required_input:
+  - meta
+  - id
+- name: update_checkout
+  category: checkout
+  description: Updates a checkout (e.g. shipping address and method).
+  required_input:
+  - meta
+  - checkout
+  - id
+- name: complete_checkout
+  category: checkout
+  description: Completes a checkout and returns the checkout result. Requires explicit buyer approval of payment.
+  required_input:
+  - meta
+  - id
+  - checkout
+  consequence: irreversible — takes payment
+- name: cancel_checkout
+  category: checkout
+  description: Cancels a checkout.
+  required_input:
+  - meta
+  - id
+- name: get_order
+  category: order
+  description: Get the details of an order.
+  required_input:
+  - meta
+  - id
+published_rules:
+- Checkout requires human approval; agents must not complete payment without explicit buyer consent.
+- The MCP endpoint is rate-limited per IP; back off on 429.
+- Pass context.address_country and context.currency for accurate pricing and availability.
+- Every tool requires a meta.ucp-agent.profile URI for UCP agent-profile discovery.
+read_only_alternatives:
+  note: The llms.txt also documents unauthenticated read paths on the storefront.
+  paths:
+  - GET /collections/all
+  - GET /products/{handle}
+  - GET /products/{handle}.json
+  - GET /collections/{handle}/products.json
+  - GET /search?q={query}&type=product
+  - GET /sitemap.xml
+cross_links:
+  crosswalk: mcp/arccos-golf-tool-crosswalk.yml
+  llms: llms/arccos-golf-llms.txt
+  well_known: well-known/arccos-golf-well-known.yml
