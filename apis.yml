@@ -101,7 +101,7 @@ apis:
   properties:
   - type: MCPServer
     url: mcp/arccos-golf-mcp.yml
-  - type: MCP
+  - type: MCPServer
     url: https://www.arccosgolf.com/api/ucp/mcp
   - type: ToolCrosswalk
     url: mcp/arccos-golf-tool-crosswalk.yml
