@@ -33,64 +33,14 @@ tags:
 - mcp
 - ecommerce
 apis:
-- name: Arccos On-Course Data API
-  description: >-
-    Restricted-access REST API that exposes the on-course data powering the Arccos apps — a golfer's rounds,
-    per-round traditional and Strokes Gained stats, paired clubs and smart club distances, user profile, and a
-    course catalog with versioned hole/tee geometry. Read access is granted per scope via an OAuth 2.0
-    authorization-code flow against signin.arccosgolf.com; clients also register HTTPS webhooks (Basic auth) to
-    receive postRound, patchRound, deleteRound and accountDisconnected events. The course search and
-    course-lookup operations are callable anonymously.
-  humanURL: https://api.arccosgolf.com/swagger
-  baseURL: https://api.arccosgolf.com/
-  tags:
-  - golf
-  - shot-tracking
-  - sports-analytics
-  - performance-analytics
-  - geospatial
-  - webhooks
-  - oauth2
-  properties:
-  - type: OpenAPI
-    url: openapi/arccos-golf-on-course-data-api-openapi.yml
-  - type: Swagger
-    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
-  - type: Documentation
-    url: https://api.arccosgolf.com/swagger
-  - type: APIReference
-    url: https://api.arccosgolf.com/swagger
-  - type: Postman
-    url: https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
-  - type: SourceCode
-    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
-  - type: Authentication
-    url: authentication/arccos-golf-authentication.yml
-  - type: OAuthScopes
-    url: scopes/arccos-golf-scopes.yml
-  - type: Conventions
-    url: conventions/arccos-golf-conventions.yml
-  - type: Idempotency
-    url: conventions/arccos-golf-conventions.yml
-  - type: ErrorCatalog
-    url: errors/arccos-golf-problem-types.yml
-  - type: DataModel
-    url: data-model/arccos-golf-data-model.yml
-  - type: Webhooks
-    url: asyncapi/arccos-golf-webhooks.yml
-  - type: Overlay
-    url: overlays/arccos-golf-on-course-data-api-overlay.yaml
-  - type: Lifecycle
-    url: lifecycle/arccos-golf-lifecycle.yml
-  - type: AgentSkill
-    url: skills/_index.yml
 - name: Arccos Golf Storefront UCP MCP Server
   description: >-
     Universal Commerce Protocol (UCP) MCP endpoint published on the Arccos Golf Shopify storefront for
-    agent-driven commerce. An anonymous JSON-RPC tools/list returns 13 tools covering catalog search and lookup,
-    product detail, cart create/update/cancel, checkout create/get/update/complete/cancel and order lookup, each
-    with a full JSON Schema inputSchema. Discovery is at /.well-known/ucp; agent instructions are published at
-    /llms.txt and /agents.md. This is the Shopify platform commerce surface, not the Arccos golf-data API.
+    agent-driven commerce. An anonymous JSON-RPC tools/list returns 13 tools covering catalog search and
+    lookup, product detail, cart create/update/cancel, checkout create/get/update/complete/cancel and
+    order lookup, each with a full JSON Schema inputSchema. Discovery is at /.well-known/ucp; agent instructions
+    are published at /llms.txt and /agents.md. This is the Shopify platform commerce surface, not the
+    Arccos golf-data API.
   humanURL: https://www.arccosgolf.com/llms.txt
   baseURL: https://www.arccosgolf.com/api/ucp/mcp
   tags:
@@ -109,6 +59,191 @@ apis:
     url: llms/arccos-golf-llms.txt
   - type: Documentation
     url: https://www.arccosgolf.com/llms.txt
+- aid: arccos-golf:arccos-golf-clubs-api
+  name: Arccos Golf Clubs API
+  description: The Clubs API from Arccos Golf — 2 operation(s) for clubs.
+  humanURL: https://api.arccosgolf.com/swagger
+  baseURL: https://api.arccosgolf.com/
+  tags:
+  - Clubs
+  properties:
+  - type: OpenAPI
+    url: openapi/arccos-golf-clubs-api-openapi.yml
+  - type: Swagger
+    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
+  - type: Documentation
+    url: https://api.arccosgolf.com/swagger
+  - type: APIReference
+    url: https://api.arccosgolf.com/swagger
+  - type: Postman
+    url: >-
+      https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+  - type: SourceCode
+    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+  - type: Authentication
+    url: authentication/arccos-golf-authentication.yml
+  - type: OAuthScopes
+    url: scopes/arccos-golf-scopes.yml
+  - type: Conventions
+    url: conventions/arccos-golf-conventions.yml
+  - type: Idempotency
+    url: conventions/arccos-golf-conventions.yml
+  - type: ErrorCatalog
+    url: errors/arccos-golf-problem-types.yml
+  - type: DataModel
+    url: data-model/arccos-golf-data-model.yml
+  - type: Webhooks
+    url: asyncapi/arccos-golf-webhooks.yml
+  - type: Lifecycle
+    url: lifecycle/arccos-golf-lifecycle.yml
+- aid: arccos-golf:arccos-golf-courses-api
+  name: Arccos Golf Courses API
+  description: The Courses API from Arccos Golf — 3 operation(s) for courses.
+  humanURL: https://api.arccosgolf.com/swagger
+  baseURL: https://api.arccosgolf.com/
+  tags:
+  - Courses
+  properties:
+  - type: OpenAPI
+    url: openapi/arccos-golf-courses-api-openapi.yml
+  - type: Swagger
+    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
+  - type: Documentation
+    url: https://api.arccosgolf.com/swagger
+  - type: APIReference
+    url: https://api.arccosgolf.com/swagger
+  - type: Postman
+    url: >-
+      https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+  - type: SourceCode
+    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+  - type: Authentication
+    url: authentication/arccos-golf-authentication.yml
+  - type: OAuthScopes
+    url: scopes/arccos-golf-scopes.yml
+  - type: Conventions
+    url: conventions/arccos-golf-conventions.yml
+  - type: Idempotency
+    url: conventions/arccos-golf-conventions.yml
+  - type: ErrorCatalog
+    url: errors/arccos-golf-problem-types.yml
+  - type: DataModel
+    url: data-model/arccos-golf-data-model.yml
+  - type: Webhooks
+    url: asyncapi/arccos-golf-webhooks.yml
+  - type: Lifecycle
+    url: lifecycle/arccos-golf-lifecycle.yml
+- aid: arccos-golf:arccos-golf-rounds-api
+  name: Arccos Golf Rounds API
+  description: The Rounds API from Arccos Golf — 3 operation(s) for rounds.
+  humanURL: https://api.arccosgolf.com/swagger
+  baseURL: https://api.arccosgolf.com/
+  tags:
+  - Rounds
+  properties:
+  - type: OpenAPI
+    url: openapi/arccos-golf-rounds-api-openapi.yml
+  - type: Swagger
+    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
+  - type: Documentation
+    url: https://api.arccosgolf.com/swagger
+  - type: APIReference
+    url: https://api.arccosgolf.com/swagger
+  - type: Postman
+    url: >-
+      https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+  - type: SourceCode
+    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+  - type: Authentication
+    url: authentication/arccos-golf-authentication.yml
+  - type: OAuthScopes
+    url: scopes/arccos-golf-scopes.yml
+  - type: Conventions
+    url: conventions/arccos-golf-conventions.yml
+  - type: Idempotency
+    url: conventions/arccos-golf-conventions.yml
+  - type: ErrorCatalog
+    url: errors/arccos-golf-problem-types.yml
+  - type: DataModel
+    url: data-model/arccos-golf-data-model.yml
+  - type: Webhooks
+    url: asyncapi/arccos-golf-webhooks.yml
+  - type: Lifecycle
+    url: lifecycle/arccos-golf-lifecycle.yml
+- aid: arccos-golf:arccos-golf-users-api
+  name: Arccos Golf Users API
+  description: The Users API from Arccos Golf — 1 operation(s) for users.
+  humanURL: https://api.arccosgolf.com/swagger
+  baseURL: https://api.arccosgolf.com/
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/arccos-golf-users-api-openapi.yml
+  - type: Swagger
+    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
+  - type: Documentation
+    url: https://api.arccosgolf.com/swagger
+  - type: APIReference
+    url: https://api.arccosgolf.com/swagger
+  - type: Postman
+    url: >-
+      https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+  - type: SourceCode
+    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+  - type: Authentication
+    url: authentication/arccos-golf-authentication.yml
+  - type: OAuthScopes
+    url: scopes/arccos-golf-scopes.yml
+  - type: Conventions
+    url: conventions/arccos-golf-conventions.yml
+  - type: Idempotency
+    url: conventions/arccos-golf-conventions.yml
+  - type: ErrorCatalog
+    url: errors/arccos-golf-problem-types.yml
+  - type: DataModel
+    url: data-model/arccos-golf-data-model.yml
+  - type: Webhooks
+    url: asyncapi/arccos-golf-webhooks.yml
+  - type: Lifecycle
+    url: lifecycle/arccos-golf-lifecycle.yml
+- aid: arccos-golf:arccos-golf-webhooks-api
+  name: Arccos Golf Webhooks API
+  description: The Webhooks API from Arccos Golf — 2 operation(s) for webhooks.
+  humanURL: https://api.arccosgolf.com/swagger
+  baseURL: https://api.arccosgolf.com/
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/arccos-golf-webhooks-api-openapi.yml
+  - type: Swagger
+    url: openapi/_original/arccos-golf-on-course-data-api-swagger.json
+  - type: Documentation
+    url: https://api.arccosgolf.com/swagger
+  - type: APIReference
+    url: https://api.arccosgolf.com/swagger
+  - type: Postman
+    url: >-
+      https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b
+  - type: SourceCode
+    url: https://github.com/arccosgolf/on-course-data-api-example-front-end
+  - type: Authentication
+    url: authentication/arccos-golf-authentication.yml
+  - type: OAuthScopes
+    url: scopes/arccos-golf-scopes.yml
+  - type: Conventions
+    url: conventions/arccos-golf-conventions.yml
+  - type: Idempotency
+    url: conventions/arccos-golf-conventions.yml
+  - type: ErrorCatalog
+    url: errors/arccos-golf-problem-types.yml
+  - type: DataModel
+    url: data-model/arccos-golf-data-model.yml
+  - type: Webhooks
+    url: asyncapi/arccos-golf-webhooks.yml
+  - type: Lifecycle
+    url: lifecycle/arccos-golf-lifecycle.yml
 common:
 - type: DomainSecurity
   url: security/arccos-golf-domain-security.yml
@@ -141,7 +276,7 @@ common:
 - type: PrivacyPolicy
   url: https://www.arccosgolf.com/policies/privacy-policy
 - type: OpenAPI
-  url: openapi/arccos-golf-on-course-data-api-openapi.yml
+  url: openapi/_original/arccos-golf-on-course-data-api-openapi.yml
 - type: Authentication
   url: authentication/arccos-golf-authentication.yml
 - type: OAuthScopes
