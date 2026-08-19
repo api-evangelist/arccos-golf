@@ -14,7 +14,7 @@ image: https://www.arccosgolf.com/cdn/shop/files/Arccos_Logo-Inline.svg
 url: https://raw.githubusercontent.com/api-evangelist/arccos-golf/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-06'
 modified: '2026-08-06'
 tags:
