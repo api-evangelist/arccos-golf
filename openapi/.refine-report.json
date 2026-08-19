@@ -1,0 +1,29 @@
+{
+  "provider": "arccos-golf",
+  "sources": [
+    "arccos-golf-clubs-api-openapi.yml",
+    "arccos-golf-courses-api-openapi.yml",
+    "arccos-golf-rounds-api-openapi.yml",
+    "arccos-golf-users-api-openapi.yml",
+    "arccos-golf-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "arccos-golf-clubs-api-openapi.yml",
+    "arccos-golf-courses-api-openapi.yml",
+    "arccos-golf-rounds-api-openapi.yml",
+    "arccos-golf-users-api-openapi.yml",
+    "arccos-golf-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "arccos-golf-clubs-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "arccos-golf-courses-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "arccos-golf-rounds-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "arccos-golf-users-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "arccos-golf-webhooks-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

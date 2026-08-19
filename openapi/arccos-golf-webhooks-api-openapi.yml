@@ -1,0 +1,203 @@
+openapi: 3.2.0
+info:
+  title: Arccos On-Course Data Webhooks API
+  version: '1'
+  description: "## Introduction\nWelcome to The On-Course Data API, powered by Arccos. The purpose of\
+    \ this API is to provide direct access to the data we\nuse to power our apps. Access to this API is\
+    \ restricted. If you are supposed to be here, you will have been issued a\nclient id and/or client\
+    \ secret. More details on how to use these credentials below.\n\nThis is a living project. While backward\
+    \ compatibility will be preserved, updates will be regular.\n\n## Authentication\n<details>\n<summary>Details</summary>\n\
+    \nTo gain access to a user's data, almost all clients will use\nthe [OAuth 2.0 Authorization Code\
+    \ Grant Flow.](https://oauth.net/2/grant-types/authorization-code/)\nThe basic steps for this flow\
+    \ are:\n1. The client sends a user to `https://signin.arccosgolf.com/login?response_type=code&client_id=<client\
+    \ id>&redirect_uri=<redirect uri>&scope=<requested scope>`.\n   For example, this swagger UI might\
+    \ use the url\n   `https://signin.arccosgolf.com/login?response_type=code&client_id=REDACTED&redirect_uri=https%3A%2F%2Fapi.arccosgolf.com%2Foauth2-redirect.html&scope=arccos%2Fread%3Arounds%20openid`\n\
+    \   * `response_type`: `code` for the access code flow.\n   * `client_id`: client id you have been\
+    \ issued by Arccos.\n   * `redirect_uri`: location to send the access code upon successful authentication.\n\
+    \   * `scope`: list of scopes (joined by `+`) that you would like to gain on behalf of the user.\n\
+    \   * `client_secret` (optional): if you were issued a client secret, this parameter is required.\n\
+    1. The user signs into Arccos directly with us.\n1. Upon successful authentication, the user will\
+    \ be redirected to uri specified in step 1 with the query parameter `code=<my access code>`\n1. The\
+    \ client can then use the code in a `POST` request to `https://api.arccosgolf.com/oauth2/token` with\n\
+    \   an `x-www-form-urlencoded` body like:\n   ```\n   grant_type:\t\t\"authorization_code\" # must\
+    \ be authorization_code\n   code:\t\t\t\"my_authorization_code\" # code from the query params\n  \
+    \ client_id:\t\t\"my client id\" # same client_id from step 1\n   redirect_uri:\t\"my redirect uri\"\
+    \ # same redirect_uri from step 1\n   client_secret:\t\"my client secret\" # same client_secret from\
+    \ step 1\n   ```\n   The access code will only be valid one time. If the response is not recorded,\
+    \ a user will need to authenticate the\n   client again by going back to step 1.\n1. Assuming everything\
+    \ was successful, the client will receive a response with an `application/json` body. In this\n  \
+    \ body, the client will find two or three tokens: `id_token`, `access_token`, and `refresh_token`.\n\
+    \n### Tokens\n\n#### `id_token`\nThe id token is used to gain basic information about a user. **It\
+    \ cannot be used to authenticate requests.**\n\nAn id token will only be in the token response if\
+    \ you include `openid` as a requested scope. It will likely be included\nin all requests a client\
+    \ makes because requesting the `openid` scope is also required to make any requests that\ninclude\
+    \ `userId` in the path (pretty much all of them).\n\nThe most important piece of information you will\
+    \ find in the id token payload is `custom:arccosUserId`. The string\nlocated in this key is what you\
+    \ use for a request's `{userId}` path parameter.\n\n#### `access_token`\nThe access token is what\
+    \ is actually used to authenticate requests. It must be included in authenticated requests by\npassing\
+    \ a header along with the request in the form `Authorization: Bearer {access_token}`. Access tokens\
+    \ expire after\nX hours.\n\n#### `refresh_token`\nRefresh tokens can be used to get a fresh set of\
+    \ tokens. This is necessary because access tokens are meant to be\nshort-lived. Refresh tokens on\
+    \ the other hand can be saved and don't expire for X days. After X days, a user will need\nto re-authenticate\
+    \ again using the same process as outlined above.\n\nTo use a refresh token, make a `POST` request\
+    \ to `https://api.arccosgolf.com/oauth2/token` with an\n`x-www-form-urlencoded` body like:\n```\n\
+    grant_type:\t\t\"refresh_token\" # must be refresh_token\nrefresh_token:\t\"my_refresh_token\" # refresh\
+    \ token\nclient_id:\t\t\"my client id\" # same client_id from step 1\nclient_secret:\t\"my client\
+    \ secret\" # same client_secret from step 1\n```\n\nYou may also revoke a refresh token by making\
+    \ a `POST` request to `https://api.arccosgolf.com/oauth2/revoke` with an\n`x-www-form-urlencoded`\
+    \ body like:\n```\ntoken:\t\t\t\"my_refresh_token\" # refresh token\narccos_user_id:\t\"my_user_id\"\
+    \ # if you don't have all tokens for a user, you can optionally use this instead to revoke all tokens\
+    \ for a user\nclient_id:\t\t\"my client id\" # same client_id from step 1\nclient_secret:\t\"my client\
+    \ secret\" # same client_secret from step 1\n```\n\n### Scopes\nScopes grant specific access to different\
+    \ clients. If a scope is not included in the initial request for access to a\nuser's data, that scope\
+    \ cannot be retroactively included; a user must explicitly grant the client access to a scope.\n\n\
+    Most scopes are simply restricting access to endpoints, though in the future some may be used to restrict\
+    \ access to\ndata retrieved _from_ those endpoints, or be used to restrict access to certain other\
+    \ operations.\n\nThe ability to request a scope on behalf of a user is controlled by Arccos; a client\
+    \ must be granted the privilege of\nrequesting a scope for a user.\n\nScopes required for each endpoint\
+    \ can be seen described below. For example, to get access to the \"Get Rounds\" endpoint,\nthe access\
+    \ token must include the `arccos/read:rounds` scope. A full list of scopes and their descriptions\
+    \ can be\nviewed by clicking \"Authorize\" below.\n\nThe only scope that isn't formatted as `arccos/<some\
+    \ operation>` is the `openid` scope. As a reminder, this scope must\nbe requested for any endpoint\
+    \ that includes `{userId}` in its path.\n</details>\n\n## Resources\n\n### Example Project\nYou can\
+    \ see an example of how the authentication flow can work in [this repository](https://github.com/arccosgolf/third-party-api-example-front-end).\n\
+    \n### Postman Collection\nYou can gain access to our Postman collection outlining these endpoints\
+    \ [here](https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b)\n\
+    \n## Webhooks\n\nClients can register HTTPS webhook URLs with the `/v5/webhooks` endpoints. Arccos\
+    \ sends JSON `POST` requests for these event types:\n\n- `postRound` and `patchRound`: include `userId`,\
+    \ `roundId`, `courseId`, `courseVersion`, and `isEnded`.\n- `deleteRound`: includes `userId` and `roundId`.\n\
+    - `accountDisconnected`: sent when a user disconnects your client from Arccos UI. The payload includes\
+    \ `eventId`, `eventVersion`, `createdAt`, and `eventBody` with `userId`, `clientId`, `disconnectedAt`,\
+    \ and `reason: \"user_disconnected\"`.\n\nExample `accountDisconnected` payload:\n\n```json\n{\n \
+    \ \"eventId\": \"uuid\",\n  \"eventType\": \"accountDisconnected\",\n  \"eventVersion\": 1,\n  \"\
+    createdAt\": \"2026-05-28T18:42:13.123Z\",\n  \"eventBody\": {\n    \"userId\": \"arccos-user-id\"\
+    ,\n    \"clientId\": \"cognito-client-id\",\n    \"disconnectedAt\": \"2026-05-28T18:42:13.123Z\"\
+    ,\n    \"reason\": \"user_disconnected\"\n  }\n}\n```\n\nWebhook delivery is at-least-once, and consumers\
+    \ should tolerate duplicates and delays. For `accountDisconnected`, `eventId` is the idempotency key\
+    \ for a published webhook event and remains stable across delivery retries of that event. Repeated\
+    \ disconnect actions can produce another event for the same disconnected account, so consumers should\
+    \ also make cleanup idempotent by `userId` and `clientId`. `accountDisconnected` retries are per SQS\
+    \ message fan-out: if a client has multiple webhook URLs and one fails, a retry can duplicate `POST`\
+    \ requests to healthy URLs with the same `eventId`. Consumers must dedupe by `eventId`. Respond with\
+    \ a `2xx` status after durable receipt, and do downstream cleanup asynchronously. Ordering between\
+    \ webhook event types is not guaranteed. For received v1 payloads, ignore unknown fields. Ignore unsupported\
+    \ future top-level fields, and ignore unsupported future `eventVersion` values unless you have explicitly\
+    \ opted in to that newer contract.\n\nFor `accountDisconnected`, stop using stored Arccos tokens for\
+    \ the provided `userId` and disable local access for that Arccos connection. This webhook does not\
+    \ include tokens, email, or user PII. Webhook v1 is unsigned. Use HTTPS and a dedicated high-entropy\
+    \ webhook URL/path, verify that incoming requests are sent to the path you registered, and keep that\
+    \ URL private. HMAC signing and secret rotation are future contract upgrades, not part of the current\
+    \ v1 contract.\n\n### Typescript Type Files\nTODO\n\n## Support\nThis is a work in progress. Changes\
+    \ & updates will be made on a rolling basis. Please send any questions, concerns or suggestions to\
+    \ [john@arccosgolf.com](mailto:john@arccosgolf.com?subject=On%20Course%20Data%20API%20Inquiry)\n"
+tags:
+- name: Webhooks
+paths:
+  /v5/webhooks:
+    get:
+      summary: Get Webhooks
+      description: "Webhook events sent to registered URLs are postRound, patchRound, deleteRound, and\
+        \ accountDisconnected. postRound and patchRound include userId, roundId, courseId, courseVersion,\
+        \ and isEnded. deleteRound includes roundId and userId. accountDisconnected includes eventId,\
+        \ eventVersion, createdAt, userId, clientId, disconnectedAt, and reason=user_disconnected. For\
+        \ accountDisconnected, eventId is the idempotency key for a published webhook event and remains\
+        \ stable across delivery retries of that event. Repeated disconnect actions can produce another\
+        \ event for the same disconnected account, so consumers should also make cleanup idempotent by\
+        \ userId and clientId. Delivery is at-least-once, so consumers should tolerate duplicates and\
+        \ delays and respond with 2xx after durable receipt.\n\n You can use these endpoints to manage\
+        \ your webhooks yourself using basic authentication."
+      tags:
+      - Webhooks
+      operationId: handle_get_webhooks.get./v5/webhooks
+      security:
+      - BasicAuth: []
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWebhooksResponse'
+    post:
+      summary: Create Webhook
+      description: Create Webhook
+      tags:
+      - Webhooks
+      operationId: handle_create_webhook.post./v5/webhooks
+      security:
+      - BasicAuth: []
+      responses:
+        '200':
+          description: 200 response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+        description: Body required in the request
+        required: true
+  /v5/webhooks/{webhookId}:
+    delete:
+      summary: Delete Webhook
+      description: Delete Webhook
+      tags:
+      - Webhooks
+      operationId: handle_delete_webhook.delete./v5/webhooks/{webhookId}
+      security:
+      - BasicAuth: []
+      parameters:
+      - name: webhookId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+components:
+  schemas:
+    Webhook:
+      properties:
+        id:
+          title: Webhook.id
+          type: number
+        webhookUrl:
+          title: Webhook.webhookUrl
+          type: string
+      required:
+      - id
+      - webhookUrl
+      additionalProperties: false
+      title: Webhook
+      type: object
+    GetWebhooksResponse:
+      items:
+        $ref: '#/components/schemas/Webhook'
+        title: GetWebhooksResponse.[]
+      title: GetWebhooksResponse.[]
+      type: array
+    CreateWebhookRequest:
+      properties:
+        webhookUrl:
+          title: CreateWebhookRequest.webhookUrl
+          type: string
+      required:
+      - webhookUrl
+      additionalProperties: false
+      title: CreateWebhookRequest
+      type: object
+  securitySchemes:
+    AccessCodeAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes:
+            openid: Required for all endpoints that have userId in the path
+            arccos/read:users: Grants read users access
+            arccos/read:rounds: Grants read rounds access
+            arccos/read:clubs: Grants read clubs access
+          authorizationUrl: https://signin.arccosgolf.com/login
+          tokenUrl: https://api.arccosgolf.com/oauth2/token
+    BasicAuth:
+      type: http
+      scheme: basic

@@ -1,0 +1,103 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Arccos On-Course Data Clubs API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Clubs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search clubs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/clubs",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "maximum number of results to get"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "number of results to get per request"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "paired, unpaired, or deleted. defaults to paired."
+              },
+              {
+                "name": "numberOfShots",
+                "value": "",
+                "type": "query",
+                "description": "number of shots to consider when computing club distances. Valid values are 5, 10, 15, 20, 25, 50, 100. Defaults to 100."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://signin.arccosgolf.com/login",
+              "accessTokenUrl": "https://api.arccosgolf.com/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Search a users clubs"
+        },
+        {
+          "info": {
+            "name": "Get One Club",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/clubs/:clubId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "clubId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://signin.arccosgolf.com/login",
+              "accessTokenUrl": "https://api.arccosgolf.com/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get One Club"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,334 @@
+{
+  "item": [
+    {
+      "id": "89da907f-46f2-41e7-9dec-68099c72aa4c",
+      "name": "Courses",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6eedcc64-420f-47e6-b83b-0c1fecf5f6f5",
+          "name": "Search Courses",
+          "request": {
+            "name": "Search Courses",
+            "description": {
+              "content": "Search Courses",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v5",
+                "courses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "maximum number of results to get"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "number of results to get per request"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Search by partial course name"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "347b39db-740d-4e39-914d-2a2d96f208e4",
+              "name": "200 response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v5",
+                    "courses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"paging\": {\n    \"limit\": 249.84488565868435,\n    \"offset\": 9070.070084814612,\n    \"previous\": \"string\",\n    \"next\": \"string\"\n  },\n  \"results\": [\n    {\n      \"courseId\": 9918.065694565046,\n      \"courseVersion\": 7695.4361396298555,\n      \"name\": \"string\",\n      \"numberOfHoles\": 5056.654048936524,\n      \"mensPar\": 9392.211107006198,\n      \"womensPar\": 747.5305789527775,\n      \"location\": {\n        \"latitude\": 2913.555664170332,\n        \"longitude\": 8400.30323749481\n      },\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"string\",\n      \"holes\": [\n        {\n          \"holeId\": 7498.810962125165,\n          \"mensPar\": 5523.750989024962,\n          \"womensPar\": 6909.48565282025\n        },\n        {\n          \"holeId\": 7383.834143269641,\n          \"mensPar\": 2609.331081847852,\n          \"womensPar\": 625.9832781338059\n        }\n      ],\n      \"tees\": [\n        {\n          \"teeId\": 9889.67235035337,\n          \"teeName\": \"string\"\n        },\n        {\n          \"teeId\": 576.030302202638,\n          \"teeName\": \"string\"\n        }\n      ],\n      \"altitude\": 6778.416046756132\n    },\n    {\n      \"courseId\": 3287.795783655516,\n      \"courseVersion\": 1613.35336187711,\n      \"name\": \"string\",\n      \"numberOfHoles\": 5354.847122756754,\n      \"mensPar\": 3775.8822469124943,\n      \"womensPar\": 5808.601537236654,\n      \"location\": {\n        \"latitude\": 5460.672495724462,\n        \"longitude\": 7838.466426429305\n      },\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"string\",\n      \"holes\": [\n        {\n          \"holeId\": 7689.325308184616,\n          \"mensPar\": 9664.780082926221,\n          \"womensPar\": 338.2392784830157\n        },\n        {\n          \"holeId\": 4969.645344584383,\n          \"mensPar\": 8861.423758584568,\n          \"womensPar\": 3369.4139388584886\n        }\n      ],\n      \"tees\": [\n        {\n          \"teeId\": 1042.9263646702468,\n          \"teeName\": \"string\"\n        },\n        {\n          \"teeId\": 6703.4731838962625,\n          \"teeName\": \"string\"\n        }\n      ],\n      \"altitude\": 3584.486311117028\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "666b749f-a1b8-4170-93ba-17e9b6c38aef",
+          "name": "Get One Course",
+          "request": {
+            "name": "Get One Course",
+            "description": {
+              "content": "Get One Course",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v5",
+                "courses",
+                ":courseId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "courseId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8812eae4-6af0-4639-95cc-44b7ddbf5be8",
+              "name": "200 response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v5",
+                    "courses",
+                    ":courseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "courseId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"courseId\": 8909.404773111612,\n  \"courseVersion\": 6324.232931858422,\n  \"name\": \"string\",\n  \"numberOfHoles\": 6805.189459077088,\n  \"mensPar\": 3931.4363858744296,\n  \"womensPar\": 3840.8881891435444,\n  \"location\": {\n    \"latitude\": 9312.200446011906,\n    \"longitude\": 6387.944850816882\n  },\n  \"city\": \"string\",\n  \"state\": \"string\",\n  \"country\": \"string\",\n  \"holes\": [\n    {\n      \"holeId\": 2173.36196980516,\n      \"mensPar\": 3067.110698856048,\n      \"womensPar\": 6259.429233682558\n    },\n    {\n      \"holeId\": 1912.674629666754,\n      \"mensPar\": 5555.413799783682,\n      \"womensPar\": 9796.857137408471\n    }\n  ],\n  \"tees\": [\n    {\n      \"teeId\": 5332.114196027757,\n      \"teeName\": \"string\"\n    },\n    {\n      \"teeId\": 3485.9843081110807,\n      \"teeName\": \"string\"\n    }\n  ],\n  \"altitude\": 9769.0634013987\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1ad78a0-63ae-4de2-b6da-a89ba0d67a10",
+          "name": "Get One Course Version",
+          "request": {
+            "name": "Get One Course Version",
+            "description": {
+              "content": "Get One Course Version",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v5",
+                "courses",
+                ":courseId",
+                "versions",
+                ":courseVersion"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "courseId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "courseVersion",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "181d3eaf-c0f4-45c1-bf26-4ce80d496461",
+              "name": "200 response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v5",
+                    "courses",
+                    ":courseId",
+                    "versions",
+                    ":courseVersion"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "courseId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "courseVersion",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"paging\": {\n    \"limit\": 3065.8301496147164,\n    \"offset\": 1067.7004646042699,\n    \"previous\": \"string\",\n    \"next\": \"string\"\n  },\n  \"results\": [\n    {\n      \"courseId\": 3263.5339524820674,\n      \"courseVersion\": 8980.128658440926,\n      \"name\": \"string\",\n      \"numberOfHoles\": 9636.672079313847,\n      \"mensPar\": 5586.727233525002,\n      \"womensPar\": 4059.721632828043,\n      \"location\": {\n        \"latitude\": 4591.726088492418,\n        \"longitude\": 8252.624082830735\n      },\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"string\",\n      \"holes\": [\n        {\n          \"holeId\": 3610.8975035060607,\n          \"mensPar\": 7950.704076186536,\n          \"womensPar\": 7227.567160906739\n        },\n        {\n          \"holeId\": 4525.944469988339,\n          \"mensPar\": 3522.8115774802595,\n          \"womensPar\": 8127.792955320719\n        }\n      ],\n      \"tees\": [\n        {\n          \"teeId\": 1726.1523934435063,\n          \"teeName\": \"string\"\n        },\n        {\n          \"teeId\": 5375.180119706903,\n          \"teeName\": \"string\"\n        }\n      ],\n      \"altitude\": 8548.273467730362\n    },\n    {\n      \"courseId\": 5947.917658630917,\n      \"courseVersion\": 3987.688460206077,\n      \"name\": \"string\",\n      \"numberOfHoles\": 7662.329634712955,\n      \"mensPar\": 7852.968241246981,\n      \"womensPar\": 2005.1489551267186,\n      \"location\": {\n        \"latitude\": 2060.8964235087446,\n        \"longitude\": 2512.24581923139\n      },\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"country\": \"string\",\n      \"holes\": [\n        {\n          \"holeId\": 9318.540905021207,\n          \"mensPar\": 1174.9660179447262,\n          \"womensPar\": 9398.893001562798\n        },\n        {\n          \"holeId\": 7908.372364538923,\n          \"mensPar\": 6877.711407854379,\n          \"womensPar\": 6396.034719843227\n        }\n      ],\n      \"tees\": [\n        {\n          \"teeId\": 24.363800494144883,\n          \"teeName\": \"string\"\n        },\n        {\n          \"teeId\": 269.8422116217225,\n          \"teeName\": \"string\"\n        }\n      ],\n      \"altitude\": 5157.210848575358\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5faca491-0d46-477c-a2e9-b88f0ab6a823",
+    "name": "Arccos On-Course Data Courses API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Introduction\nWelcome to The On-Course Data API, powered by Arccos. The purpose of this API is to provide direct access to the data we\nuse to power our apps. Access to this API is restricted. If you are supposed to be here, you will have been issued a\nclient id and/or client secret. More details on how to use these credentials below.\n\nThis is a living project. While backward compatibility will be preserved, updates will be regular.\n\n## Authentication\n<details>\n<summary>Details</summary>\n\nTo gain access to a user's data, almost all clients will use\nthe [OAuth 2.0 Authorization Code Grant Flow.](https://oauth.net/2/grant-types/authorization-code/)\nThe basic steps for this flow are:\n1. The client sends a user to `https://signin.arccosgolf.com/login?response_type=code&client_id=<client id>&redirect_uri=<redirect uri>&scope=<requested scope>`.\n   For example, this swagger UI might use the url\n   `https://signin.arccosgolf.com/login?response_type=code&client_id=REDACTED&redirect_uri=https%3A%2F%2Fapi.arccosgolf.com%2Foauth2-redirect.html&scope=arccos%2Fread%3Arounds%20openid`\n   * `response_type`: `code` for the access code flow.\n   * `client_id`: client id you have been issued by Arccos.\n   * `redirect_uri`: location to send the access code upon successful authentication.\n   * `scope`: list of scopes (joined by `+`) that you would like to gain on behalf of the user.\n   * `client_secret` (optional): if you were issued a client secret, this parameter is required.\n1. The user signs into Arccos directly with us.\n1. Upon successful authentication, the user will be redirected to uri specified in step 1 with the query parameter `code=<my access code>`\n1. The client can then use the code in a `POST` request to `https://api.arccosgolf.com/oauth2/token` with\n   an `x-www-form-urlencoded` body like:\n   ```\n   grant_type:\t\t\"authorization_code\" # must be authorization_code\n   code:\t\t\t\"my_authorization_code\" # code from the query params\n   client_id:\t\t\"my client id\" # same client_id from step 1\n   redirect_uri:\t\"my redirect uri\" # same redirect_uri from step 1\n   client_secret:\t\"my client secret\" # same client_secret from step 1\n   ```\n   The access code will only be valid one time. If the response is not recorded, a user will need to authenticate the\n   client again by going back to step 1.\n1. Assuming everything was successful, the client will receive a response with an `application/json` body. In this\n   body, the client will find two or three tokens: `id_token`, `access_token`, and `refresh_token`.\n\n### Tokens\n\n#### `id_token`\nThe id token is used to gain basic information about a user. **It cannot be used to authenticate requests.**\n\nAn id token will only be in the token response if you include `openid` as a requested scope. It will likely be included\nin all requests a client makes because requesting the `openid` scope is also required to make any requests that\ninclude `userId` in the path (pretty much all of them).\n\nThe most important piece of information you will find in the id token payload is `custom:arccosUserId`. The string\nlocated in this key is what you use for a request's `{userId}` path parameter.\n\n#### `access_token`\nThe access token is what is actually used to authenticate requests. It must be included in authenticated requests by\npassing a header along with the request in the form `Authorization: Bearer {access_token}`. Access tokens expire after\nX hours.\n\n#### `refresh_token`\nRefresh tokens can be used to get a fresh set of tokens. This is necessary because access tokens are meant to be\nshort-lived. Refresh tokens on the other hand can be saved and don't expire for X days. After X days, a user will need\nto re-authenticate again using the same process as outlined above.\n\nTo use a refresh token, make a `POST` request to `https://api.arccosgolf.com/oauth2/token` with an\n`x-www-form-urlencoded` body like:\n```\ngrant_type:\t\t\"refresh_token\" # must be refresh_token\nrefresh_token:\t\"my_refresh_token\" # refresh token\nclient_id:\t\t\"my client id\" # same client_id from step 1\nclient_secret:\t\"my client secret\" # same client_secret from step 1\n```\n\nYou may also revoke a refresh token by making a `POST` request to `https://api.arccosgolf.com/oauth2/revoke` with an\n`x-www-form-urlencoded` body like:\n```\ntoken:\t\t\t\"my_refresh_token\" # refresh token\narccos_user_id:\t\"my_user_id\" # if you don't have all tokens for a user, you can optionally use this instead to revoke all tokens for a user\nclient_id:\t\t\"my client id\" # same client_id from step 1\nclient_secret:\t\"my client secret\" # same client_secret from step 1\n```\n\n### Scopes\nScopes grant specific access to different clients. If a scope is not included in the initial request for access to a\nuser's data, that scope cannot be retroactively included; a user must explicitly grant the client access to a scope.\n\nMost scopes are simply restricting access to endpoints, though in the future some may be used to restrict access to\ndata retrieved _from_ those endpoints, or be used to restrict access to certain other operations.\n\nThe ability to request a scope on behalf of a user is controlled by Arccos; a client must be granted the privilege of\nrequesting a scope for a user.\n\nScopes required for each endpoint can be seen described below. For example, to get access to the \"Get Rounds\" endpoint,\nthe access token must include the `arccos/read:rounds` scope. A full list of scopes and their descriptions can be\nviewed by clicking \"Authorize\" below.\n\nThe only scope that isn't formatted as `arccos/<some operation>` is the `openid` scope. As a reminder, this scope must\nbe requested for any endpoint that includes `{userId}` in its path.\n</details>\n\n## Resources\n\n### Example Project\nYou can see an example of how the authentication flow can work in [this repository](https://github.com/arccosgolf/third-party-api-example-front-end).\n\n### Postman Collection\nYou can gain access to our Postman collection outlining these endpoints [here](https://www.postman.com/arccosgolf/workspace/arccos-public-api/collection/14095300-9001cc03-d9dd-4c77-a42d-ca6a0417350b)\n\n## Webhooks\n\nClients can register HTTPS webhook URLs with the `/v5/webhooks` endpoints. Arccos sends JSON `POST` requests for these event types:\n\n- `postRound` and `patchRound`: include `userId`, `roundId`, `courseId`, `courseVersion`, and `isEnded`.\n- `deleteRound`: includes `userId` and `roundId`.\n- `accountDisconnected`: sent when a user disconnects your client from Arccos UI. The payload includes `eventId`, `eventVersion`, `createdAt`, and `eventBody` with `userId`, `clientId`, `disconnectedAt`, and `reason: \"user_disconnected\"`.\n\nExample `accountDisconnected` payload:\n\n```json\n{\n  \"eventId\": \"uuid\",\n  \"eventType\": \"accountDisconnected\",\n  \"eventVersion\": 1,\n  \"createdAt\": \"2026-05-28T18:42:13.123Z\",\n  \"eventBody\": {\n    \"userId\": \"arccos-user-id\",\n    \"clientId\": \"cognito-client-id\",\n    \"disconnectedAt\": \"2026-05-28T18:42:13.123Z\",\n    \"reason\": \"user_disconnected\"\n  }\n}\n```\n\nWebhook delivery is at-least-once, and consumers should tolerate duplicates and delays. For `accountDisconnected`, `eventId` is the idempotency key for a published webhook event and remains stable across delivery retries of that event. Repeated disconnect actions can produce another event for the same disconnected account, so consumers should also make cleanup idempotent by `userId` and `clientId`. `accountDisconnected` retries are per SQS message fan-out: if a client has multiple webhook URLs and one fails, a retry can duplicate `POST` requests to healthy URLs with the same `eventId`. Consumers must dedupe by `eventId`. Respond with a `2xx` status after durable receipt, and do downstream cleanup asynchronously. Ordering between webhook event types is not guaranteed. For received v1 payloads, ignore unknown fields. Ignore unsupported future top-level fields, and ignore unsupported future `eventVersion` values unless you have explicitly opted in to that newer contract.\n\nFor `accountDisconnected`, stop using stored Arccos tokens for the provided `userId` and disable local access for that Arccos connection. This webhook does not include tokens, email, or user PII. Webhook v1 is unsigned. Use HTTPS and a dedicated high-entropy webhook URL/path, verify that incoming requests are sent to the path you registered, and keep that URL private. HMAC signing and secret rotation are future contract upgrades, not part of the current v1 contract.\n\n### Typescript Type Files\nTODO\n\n## Support\nThis is a work in progress. Changes & updates will be made on a rolling basis. Please send any questions, concerns or suggestions to [john@arccosgolf.com](mailto:john@arccosgolf.com?subject=On%20Course%20Data%20API%20Inquiry)\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Arccos On-Course Data API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rounds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Rounds",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/rounds",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "maximum number of results to get"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "number of results to get per request"
+              }
+            ]
+          },
+          "docs": "Paged API used to get a users rounds"
+        },
+        {
+          "info": {
+            "name": "Get One Round",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/rounds/:roundId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roundId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get details for one round"
+        },
+        {
+          "info": {
+            "name": "Get Round Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/rounds/:roundId/stats",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roundId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "goalHandicap",
+                "value": "",
+                "type": "query",
+                "description": "-30 to 10. Someone with a goal of 20 over par should enter -20."
+              }
+            ]
+          },
+          "docs": "Get traditional stats for one round with goals relative to a goalHandicap. If no handicap is provided, 0 is assumed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get One User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get details for one user"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Courses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Courses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/courses",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "maximum number of results to get"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "number of results to get per request"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Search by partial course name"
+              }
+            ]
+          },
+          "docs": "Search Courses"
+        },
+        {
+          "info": {
+            "name": "Get One Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/courses/:courseId",
+            "params": [
+              {
+                "name": "courseId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get One Course"
+        },
+        {
+          "info": {
+            "name": "Get One Course Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/courses/:courseId/versions/:courseVersion",
+            "params": [
+              {
+                "name": "courseId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "courseVersion",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get One Course Version"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Clubs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search clubs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/clubs",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "maximum number of results to get"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "number of results to get per request"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "paired, unpaired, or deleted. defaults to paired."
+              },
+              {
+                "name": "numberOfShots",
+                "value": "",
+                "type": "query",
+                "description": "number of shots to consider when computing club distances. Valid values are 5, 10, 15, 20, 25, 50, 100. Defaults to 100."
+              }
+            ]
+          },
+          "docs": "Search a users clubs"
+        },
+        {
+          "info": {
+            "name": "Get One Club",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/clubs/:clubId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "clubId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get One Club"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/webhooks"
+          },
+          "docs": "Webhook events sent to registered URLs are postRound, patchRound, deleteRound, and accountDisconnected. postRound and patchRound include userId, roundId, courseId, courseVersion, and isEnded. deleteRound includes roundId and userId. accountDisconnected includes eventId, eventVersion, createdAt, userId, clientId, disconnectedAt, and reason=user_disconnected. For accountDisconnected, eventId is the idempotency key for a published webhook event and remains stable across delivery retries of that eve"
+        },
+        {
+          "info": {
+            "name": "Create Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v5/webhooks"
+          },
+          "docs": "Create Webhook"
+        },
+        {
+          "info": {
+            "name": "Delete Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v5/webhooks/:webhookId",
+            "params": [
+              {
+                "name": "webhookId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Webhook"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

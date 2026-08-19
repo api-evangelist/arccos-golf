@@ -1,23 +1,19 @@
 generated: '2026-08-06'
 method: searched
-source: >-
-  POST https://www.arccosgolf.com/api/ucp/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"} — HTTP 200,
-  application/json, 2026-08-06; discovery via https://www.arccosgolf.com/.well-known/ucp and
-  https://www.arccosgolf.com/llms.txt
+source: POST https://www.arccosgolf.com/api/ucp/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"} — HTTP
+  200, application/json, 2026-08-06; discovery via https://www.arccosgolf.com/.well-known/ucp and https://www.arccosgolf.com/llms.txt
 status: live
 name: Arccos Golf Storefront UCP MCP Server
 endpoint: https://www.arccosgolf.com/api/ucp/mcp
 transport: streamable-http (JSON-RPC over HTTP POST)
 authentication:
   tools_list: anonymous — tools/list returned 200 with full inputSchemas and no credentials
-  transactions: >-
-    Checkout completion requires contemporaneous buyer approval; the storefront delegates customer-account auth
-    to Shopify (see well-known/arccos-golf-openid-configuration.json).
-provenance_note: >-
-  This MCP server is the Shopify platform's Universal Commerce Protocol commerce surface, published on the Arccos
-  Golf storefront host. It exposes the online store (sensors, grips, Arccos Air, accessories) — NOT the Arccos
-  On-Course Data API. There is no MCP server for the golf-data API. Recorded here because it is served from the
-  provider's own domain and is anonymously discoverable and introspectable.
+  transactions: Checkout completion requires contemporaneous buyer approval; the storefront delegates
+    customer-account auth to Shopify (see well-known/arccos-golf-openid-configuration.json).
+provenance_note: This MCP server is the Shopify platform's Universal Commerce Protocol commerce surface,
+  published on the Arccos Golf storefront host. It exposes the online store (sensors, grips, Arccos Air,
+  accessories) — NOT the Arccos On-Course Data API. There is no MCP server for the golf-data API. Recorded
+  here because it is served from the provider's own domain and is anonymously discoverable and introspectable.
 discovery:
   ucp_profile: https://www.arccosgolf.com/.well-known/ucp
   ucp_versions:
@@ -104,7 +100,8 @@ tools:
   - id
 - name: complete_checkout
   category: checkout
-  description: Completes a checkout and returns the checkout result. Requires explicit buyer approval of payment.
+  description: Completes a checkout and returns the checkout result. Requires explicit buyer approval
+    of payment.
   required_input:
   - meta
   - id
@@ -140,3 +137,9 @@ cross_links:
   crosswalk: mcp/arccos-golf-tool-crosswalk.yml
   llms: llms/arccos-golf-llms.txt
   well_known: well-known/arccos-golf-well-known.yml
+deployment:
+  mode: remote
+  verified: searched
+  tools: 13
+  checked: '2026-08-12'
+  source: catalog MCP census

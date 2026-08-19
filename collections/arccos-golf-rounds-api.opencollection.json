@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Arccos On-Course Data Rounds API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rounds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Rounds",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/rounds",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "maximum number of results to get"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "number of results to get per request"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://signin.arccosgolf.com/login",
+              "accessTokenUrl": "https://api.arccosgolf.com/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Paged API used to get a users rounds"
+        },
+        {
+          "info": {
+            "name": "Get One Round",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/rounds/:roundId",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roundId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://signin.arccosgolf.com/login",
+              "accessTokenUrl": "https://api.arccosgolf.com/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get details for one round"
+        },
+        {
+          "info": {
+            "name": "Get Round Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v5/users/:userId/rounds/:roundId/stats",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roundId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "goalHandicap",
+                "value": "",
+                "type": "query",
+                "description": "-30 to 10. Someone with a goal of 20 over par should enter -20."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://signin.arccosgolf.com/login",
+              "accessTokenUrl": "https://api.arccosgolf.com/oauth2/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get traditional stats for one round with goals relative to a goalHandicap. If no handicap is provided, 0 is assumed."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
