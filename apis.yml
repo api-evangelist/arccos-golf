@@ -19,6 +19,21 @@ created: '2026-08-06'
 modified: '2026-08-06'
 tags:
 - Company
+- Golf
+- Sports Technology
+- Wearables
+- IoT
+- shot-tracking
+- Sports Analytics
+- Performance Analytics
+- Geospatial
+- Consumer Hardware
+- Webhook
+- Authentication
+- MCP
+- E-Commerce
+tags_raw:
+- Company
 - golf
 - sports-technology
 - wearables
@@ -44,6 +59,11 @@ apis:
   humanURL: https://www.arccosgolf.com/llms.txt
   baseURL: https://www.arccosgolf.com/api/ucp/mcp
   tags:
+  - MCP
+  - E-Commerce
+  - agent-native
+  - UCP
+  tags_raw:
   - mcp
   - ecommerce
   - agent-native
@@ -176,6 +196,8 @@ apis:
   humanURL: https://api.arccosgolf.com/swagger
   baseURL: https://api.arccosgolf.com/
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -213,6 +235,8 @@ apis:
   humanURL: https://api.arccosgolf.com/swagger
   baseURL: https://api.arccosgolf.com/
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
