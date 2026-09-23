@@ -1,11 +1,7 @@
 {
   "provider": "arccos-golf",
   "sources": [
-    "arccos-golf-clubs-api-openapi.yml",
-    "arccos-golf-courses-api-openapi.yml",
-    "arccos-golf-rounds-api-openapi.yml",
-    "arccos-golf-users-api-openapi.yml",
-    "arccos-golf-webhooks-api-openapi.yml"
+    "_original/arccos-golf-on-course-data-api-openapi.yml"
   ],
   "outputs": [
     "arccos-golf-clubs-api-openapi.yml",
@@ -18,12 +14,22 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "arccos-golf-clubs-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
-    "arccos-golf-courses-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
-    "arccos-golf-rounds-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
-    "arccos-golf-users-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
-    "arccos-golf-webhooks-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "arccos-golf-on-course-data-api-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "arccos-golf-on-course-data-api-openapi.yml: declared missing tag: Clubs",
+    "arccos-golf-on-course-data-api-openapi.yml: declared missing tag: Courses",
+    "arccos-golf-on-course-data-api-openapi.yml: declared missing tag: Rounds",
+    "arccos-golf-on-course-data-api-openapi.yml: declared missing tag: Users",
+    "arccos-golf-on-course-data-api-openapi.yml: declared missing tag: Webhooks",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/arccos-golf-on-course-data-api-swagger.json: archived document superseded by a larger archived document",
+    "arccos-golf-clubs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "arccos-golf-courses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "arccos-golf-rounds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "arccos-golf-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "arccos-golf-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

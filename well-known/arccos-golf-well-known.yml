@@ -1,11 +1,11 @@
 generated: '2026-08-06'
 method: probed
 source: Direct HTTP probes of every Arccos Golf host, 2026-08-06
-summary: >-
-  The API host api.arccosgolf.com answers every /.well-known/* path with its generic 401 auth error, so nothing
-  is discoverable there anonymously. The Shopify-hosted storefront www.arccosgolf.com serves a real OAuth/OIDC
-  discovery set (delegated to Shopify customer accounts) plus a Universal Commerce Protocol merchant profile. No
-  security.txt, api-catalog, ai-plugin.json or A2A agent card is published on any host.
+summary: The API host api.arccosgolf.com answers every /.well-known/* path with its generic 401 auth error,
+  so nothing is discoverable there anonymously. The Shopify-hosted storefront www.arccosgolf.com serves
+  a real OAuth/OIDC discovery set (delegated to Shopify customer accounts) plus a Universal Commerce Protocol
+  merchant profile. No security.txt, api-catalog, ai-plugin.json or A2A agent card is published on any
+  host.
 hosts_probed:
 - www.arccosgolf.com
 - api.arccosgolf.com
@@ -16,9 +16,8 @@ probes:
   status: 200
   content_type: application/json
   file: well-known/arccos-golf-openid-configuration.json
-  note: >-
-    Shopify customer-account OIDC. issuer https://shopify.com/authentication/7805525; scopes openid, email,
-    customer-account-api:full, customer-account-mcp-api:full; PKCE S256; RS256 id tokens.
+  note: Shopify customer-account OIDC. issuer https://shopify.com/authentication/7805525; scopes openid,
+    email, customer-account-api:full, customer-account-mcp-api:full; PKCE S256; RS256 id tokens.
 - host: www.arccosgolf.com
   path: /.well-known/oauth-authorization-server
   status: 200
@@ -30,16 +29,16 @@ probes:
   status: 200
   content_type: application/json
   file: well-known/arccos-golf-oauth-protected-resource.json
-  note: 'resource https://www.arccosgolf.com; authorization_servers [shopify.com/authentication/7805525]; bearer via header.'
+  note: resource https://www.arccosgolf.com; authorization_servers [shopify.com/authentication/7805525];
+    bearer via header.
 - host: www.arccosgolf.com
   path: /.well-known/ucp
   status: 200
   content_type: application/json
   file: well-known/arccos-golf-ucp.json
-  note: >-
-    Universal Commerce Protocol merchant profile — protocol version 2026-04-08 (2026-01-23 also supported), MCP
-    transport at /api/ucp/mcp, shopping capabilities (cart, checkout, fulfillment, discount, order, catalog
-    search/lookup) and payment handlers.
+  note: Universal Commerce Protocol merchant profile — protocol version 2026-04-08 (2026-01-23 also supported),
+    MCP transport at /api/ucp/mcp, shopping capabilities (cart, checkout, fulfillment, discount, order,
+    catalog search/lookup) and payment handlers.
 - host: www.arccosgolf.com
   path: /llms.txt
   status: 200
@@ -68,7 +67,8 @@ probes:
 - host: api.arccosgolf.com
   path: /.well-known/security.txt
   status: 401
-  note: Generic {"error":{"code":40101}} auth error — the API host gates every unknown path behind bearer auth.
+  note: Generic {"error":{"code":40101}} auth error — the API host gates every unknown path behind bearer
+    auth.
 - host: api.arccosgolf.com
   path: /.well-known/openid-configuration
   status: 401
@@ -103,6 +103,39 @@ security_txt:
   published: false
 agent_card:
   published: false
-  note: >-
-    No A2A agent card on any host. The 404s on www are genuine 404s (HTML 404 body), and the 401s on the API host
-    are its blanket auth gate, not a card.
+  note: No A2A agent card on any host. The 404s on www are genuine 404s (HTML 404 body), and the 401s
+    on the API host are its blanket auth gate, not a card.
+hosts:
+- host: ''
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: arccos-golf-openid-configuration.json
+    content_type: application/json
+    note: Shopify customer-account OIDC. issuer https://shopify.com/authentication/7805525; scopes openid,
+      email, customer-account-api:full, customer-account-mcp-api:full; PKCE S256; RS256 id tokens.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: arccos-golf-oauth-authorization-server.json
+    content_type: application/json
+    note: Identical document to the openid-configuration response.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: arccos-golf-oauth-protected-resource.json
+    content_type: application/json
+    note: resource https://www.arccosgolf.com; authorization_servers [shopify.com/authentication/7805525];
+      bearer via header.
+  - path: /.well-known/ucp
+    status: 200
+    file: arccos-golf-ucp.json
+    content_type: application/json
+    note: Universal Commerce Protocol merchant profile — protocol version 2026-04-08 (2026-01-23 also
+      supported), MCP transport at /api/ucp/mcp, shopping capabilities (cart, checkout, fulfillment, discount,
+      order, catalog search/lookup) and payment handlers.
+x-shape-fix:
+  converted: '2026-08-20'
+  from: probes
+  note: Rewritten into hosts[] -> documents[], the only shape well_known_docs() in score.rb reads. A served
+    .well-known surface recorded in any other shape scores as absent. Promoted ONLY the 2xx rows out of
+    the probe log; non-2xx probes are real negative results and were left in place, not converted into
+    documents.
