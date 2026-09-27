@@ -12,15 +12,19 @@ description: >-
   an llms.txt and a Universal Commerce Protocol (UCP) MCP endpoint for agent-driven commerce.
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - arccosgolf/on-course-data-api-example-front-end
+  open_source: unknown
   commercial: true
-  callable_host: true
+  callable_host: false
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
@@ -87,7 +91,7 @@ apis:
   tags:
   - MCP
   - E-Commerce
-  - agent-native
+  - Agent-Native
   - Universal Commerce Protocol
   tags_raw:
   - mcp
@@ -105,6 +109,9 @@ apis:
     url: llms/arccos-golf-llms.txt
   - type: Documentation
     url: https://www.arccosgolf.com/llms.txt
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 - aid: arccos-golf:arccos-golf-clubs-api
   name: Arccos Golf Clubs API
   description: The Clubs API from Arccos Golf — 2 operation(s) for clubs.

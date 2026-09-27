@@ -133,20 +133,6 @@ components:
         additionalProperties: false
         type: object
       title: GetCoursesResponse
-    Location:
-      properties:
-        latitude:
-          title: Location.latitude
-          type: number
-        longitude:
-          title: Location.longitude
-          type: number
-      required:
-      - latitude
-      - longitude
-      additionalProperties: false
-      title: Location
-      type: object
     CourseHole:
       properties:
         holeId:
@@ -165,22 +151,9 @@ components:
       additionalProperties: false
       title: CourseHole
       type: object
-    Tee:
-      properties:
-        teeId:
-          title: Tee.teeId
-          description: the numeric identifier for the tee. this is unique against the courseId and courseVersion, not globally unique
-          type: number
-        teeName:
-          title: Tee.teeName
-          description: the display string for the tee that was played
-          type: string
-      required:
-      - teeId
-      - teeName
-      additionalProperties: false
-      title: Tee
-      type: object
+    GetOneCourseResponse:
+      $ref: '#/components/schemas/Course'
+      title: GetOneCourseResponse
     Course:
       properties:
         courseId:
@@ -244,9 +217,36 @@ components:
       additionalProperties: false
       title: Course
       type: object
-    GetOneCourseResponse:
-      $ref: '#/components/schemas/Course'
-      title: GetOneCourseResponse
+    Location:
+      properties:
+        latitude:
+          title: Location.latitude
+          type: number
+        longitude:
+          title: Location.longitude
+          type: number
+      required:
+      - latitude
+      - longitude
+      additionalProperties: false
+      title: Location
+      type: object
+    Tee:
+      properties:
+        teeId:
+          title: Tee.teeId
+          description: the numeric identifier for the tee. this is unique against the courseId and courseVersion, not globally unique
+          type: number
+        teeName:
+          title: Tee.teeName
+          description: the display string for the tee that was played
+          type: string
+      required:
+      - teeId
+      - teeName
+      additionalProperties: false
+      title: Tee
+      type: object
   securitySchemes:
     AccessCodeAuth:
       type: oauth2

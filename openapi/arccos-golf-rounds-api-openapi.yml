@@ -107,267 +107,15 @@ paths:
                 $ref: '#/components/schemas/GetOneRoundStatsResponse'
 components:
   schemas:
-    PagedResponseHelper:
-      properties:
-        paging:
-          properties:
-            limit:
-              title: PagedResponseHelper.paging.limit
-              type: number
-            offset:
-              title: PagedResponseHelper.paging.offset
-              type: number
-            previous:
-              title: PagedResponseHelper.paging.previous
-              type: string
-            next:
-              title: PagedResponseHelper.paging.next
-              type: string
-          required:
-          - limit
-          - offset
-          additionalProperties: false
-          title: PagedResponseHelper.paging
-          type: object
-        results:
-          items:
-            title: PagedResponseHelper.results.[]
-          title: PagedResponseHelper.results
-          type: array
-      required:
-      - paging
-      - results
-      additionalProperties: false
-      title: PagedResponseHelper
-      type: object
-    RoundStats:
-      properties:
-        overall:
-          properties:
-            numberOfShots:
-              title: RoundStats.overall.numberOfShots
-              type: number
-            totalShotDistance:
-              title: RoundStats.overall.totalShotDistance
-              type: number
-          required:
-          - numberOfShots
-          - totalShotDistance
-          additionalProperties: false
-          title: RoundStats.overall
-          type: object
-        driving:
-          $ref: '#/components/schemas/DrivingStrokesGainedBreakdown'
-          title: RoundStats.driving
-        approach:
-          $ref: '#/components/schemas/ApproachStrokesGainedBreakdown'
-          title: RoundStats.approach
-        short:
-          $ref: '#/components/schemas/ShortStrokesGainedBreakdown'
-          title: RoundStats.short
-        putt:
-          $ref: '#/components/schemas/PuttStrokesGainedBreakdown'
-          title: RoundStats.putt
-      required:
-      - overall
-      - driving
-      - approach
-      - short
-      - putt
-      additionalProperties: false
-      title: RoundStats
-      type: object
-    Tee:
-      properties:
-        teeId:
-          title: Tee.teeId
-          description: the numeric identifier for the tee. this is unique against the courseId and courseVersion, not globally unique
-          type: number
-        teeName:
-          title: Tee.teeName
-          description: the display string for the tee that was played
-          type: string
-      required:
-      - teeId
-      - teeName
-      additionalProperties: false
-      title: Tee
-      type: object
-    ShortStrokesGainedBreakdown:
-      properties:
-        numberOfShots:
-          title: ShortStrokesGainedBreakdown.numberOfShots
-          type: number
-        upAndDown:
-          properties:
-            chances:
-              title: ShortStrokesGainedBreakdown.upAndDown.chances
-              type: number
-            successes:
-              title: ShortStrokesGainedBreakdown.upAndDown.successes
-              type: number
-          required:
-          - chances
-          - successes
-          additionalProperties: false
-          title: ShortStrokesGainedBreakdown.upAndDown
-          type: object
-      required:
-      - numberOfShots
-      - upAndDown
-      additionalProperties: false
-      title: ShortStrokesGainedBreakdown
-      type: object
-    PuttStrokesGainedBreakdown:
-      properties:
-        numberOfShots:
-          title: PuttStrokesGainedBreakdown.numberOfShots
-          type: number
-        zeroPutts:
-          title: PuttStrokesGainedBreakdown.zeroPutts
-          type: number
-        onePutts:
-          title: PuttStrokesGainedBreakdown.onePutts
-          type: number
-        twoPutts:
-          title: PuttStrokesGainedBreakdown.twoPutts
-          type: number
-        threePlusPutts:
-          title: PuttStrokesGainedBreakdown.threePlusPutts
-          type: number
-      required:
-      - numberOfShots
-      - zeroPutts
-      - onePutts
-      - twoPutts
-      - threePlusPutts
-      additionalProperties: false
-      title: PuttStrokesGainedBreakdown
-      type: object
-    GetOneRoundStatsResponse:
-      properties:
-        roundId:
-          title: GetOneRoundStatsResponse.roundId
-          type: number
-        courseId:
-          title: GetOneRoundStatsResponse.courseId
-          type: number
-        courseVersion:
-          title: GetOneRoundStatsResponse.courseVersion
-          type: number
-        goalHandicap:
-          title: GetOneRoundStatsResponse.goalHandicap
-          type: number
-        stats:
-          $ref: '#/components/schemas/RoundStats'
-          title: GetOneRoundStatsResponse.stats
-      required:
-      - roundId
-      - courseId
-      - courseVersion
-      - goalHandicap
-      - stats
-      additionalProperties: false
-      title: GetOneRoundStatsResponse
-      type: object
-    Pin:
-      allOf:
-      - $ref: '#/components/schemas/Location'
-      - additionalProperties: false
-        type: object
-      title: Pin
-    RoundHole:
-      allOf:
-      - $ref: '#/components/schemas/Hole'
-      - properties:
-          stats:
-            items:
-              $ref: '#/components/schemas/HoleStat'
-              title: stats.[]
-            title: stats
-            type: array
-          startTime:
-            title: startTime
-            type: string
-          endTime:
-            title: endTime
-            type: string
-          mensPar:
-            title: mensPar
-            type: number
-          womensPar:
-            title: womensPar
-            type: number
-          pin:
-            $ref: '#/components/schemas/Pin'
-            title: pin
-          shots:
-            items:
-              $ref: '#/components/schemas/Shot'
-              title: shots.[]
-            title: shots
-            type: array
-        required:
-        - stats
-        - startTime
-        - endTime
-        - mensPar
-        - womensPar
-        - pin
-        - shots
-        additionalProperties: false
-        type: object
-      title: RoundHole
-    DrivingStrokesGainedBreakdown:
-      properties:
-        numberOfShots:
-          title: DrivingStrokesGainedBreakdown.numberOfShots
-          type: number
-        averageDriveDistance:
-          $ref: '#/components/schemas/TraditionalStatComparison'
-          title: DrivingStrokesGainedBreakdown.averageDriveDistance
-        longestDriveDistance:
-          title: DrivingStrokesGainedBreakdown.longestDriveDistance
-          type: number
-        hitFairwaysPercent:
-          $ref: '#/components/schemas/TraditionalStatComparison'
-          title: DrivingStrokesGainedBreakdown.hitFairwaysPercent
-        hitFairways:
-          properties:
-            chances:
-              title: DrivingStrokesGainedBreakdown.hitFairways.chances
-              type: number
-            successes:
-              title: DrivingStrokesGainedBreakdown.hitFairways.successes
-              type: number
-          required:
-          - chances
-          - successes
-          additionalProperties: false
-          title: DrivingStrokesGainedBreakdown.hitFairways
-          type: object
-      required:
-      - numberOfShots
-      - longestDriveDistance
-      - hitFairways
-      additionalProperties: false
-      title: DrivingStrokesGainedBreakdown
-      type: object
-    RoundDetails:
-      allOf:
-      - $ref: '#/components/schemas/Round'
-      - properties:
-          holes:
-            items:
-              $ref: '#/components/schemas/RoundHole'
-              title: holes.[]
-            title: holes
-            type: array
-        required:
-        - holes
-        additionalProperties: false
-        type: object
-      title: RoundDetails
+    Terrain:
+      enum:
+      - tee
+      - fairway
+      - rough
+      - sand
+      - green
+      title: Terrain
+      type: string
     Round:
       properties:
         roundId:
@@ -417,63 +165,6 @@ components:
       - tee
       additionalProperties: false
       title: Round
-      type: object
-    GetRoundsResponse:
-      allOf:
-      - $ref: '#/components/schemas/PagedResponseHelper'
-      - properties:
-          results:
-            items:
-              $ref: '#/components/schemas/Round'
-              title: results.[]
-            title: results
-            type: array
-        required:
-        - results
-        additionalProperties: false
-        type: object
-      title: GetRoundsResponse
-    Hole:
-      properties:
-        holeId:
-          title: Hole.holeId
-          type: number
-      required:
-      - holeId
-      additionalProperties: false
-      title: Hole
-      type: object
-    Location:
-      properties:
-        latitude:
-          title: Location.latitude
-          type: number
-        longitude:
-          title: Location.longitude
-          type: number
-      required:
-      - latitude
-      - longitude
-      additionalProperties: false
-      title: Location
-      type: object
-    TraditionalStatComparison:
-      properties:
-        actual:
-          title: TraditionalStatComparison.actual
-          type: number
-        goal:
-          title: TraditionalStatComparison.goal
-          type: number
-        scratch:
-          title: TraditionalStatComparison.scratch
-          type: number
-      required:
-      - actual
-      - goal
-      - scratch
-      additionalProperties: false
-      title: TraditionalStatComparison
       type: object
     Shot:
       properties:
@@ -635,35 +326,40 @@ components:
       additionalProperties: false
       title: Shot
       type: object
-    GetOneRoundResponse:
-      $ref: '#/components/schemas/RoundDetails'
-      title: GetOneRoundResponse
-    Terrain:
-      enum:
-      - tee
-      - fairway
-      - rough
-      - sand
-      - green
-      title: Terrain
-      type: string
-    HoleStat:
+    DrivingStrokesGainedBreakdown:
       properties:
-        name:
-          enum:
-          - gir
-          - sand_save
-          - up_and_down
-          title: HoleStat.name
-          type: string
-        succeeded:
-          title: HoleStat.succeeded
-          type: boolean
+        numberOfShots:
+          title: DrivingStrokesGainedBreakdown.numberOfShots
+          type: number
+        averageDriveDistance:
+          $ref: '#/components/schemas/TraditionalStatComparison'
+          title: DrivingStrokesGainedBreakdown.averageDriveDistance
+        longestDriveDistance:
+          title: DrivingStrokesGainedBreakdown.longestDriveDistance
+          type: number
+        hitFairwaysPercent:
+          $ref: '#/components/schemas/TraditionalStatComparison'
+          title: DrivingStrokesGainedBreakdown.hitFairwaysPercent
+        hitFairways:
+          properties:
+            chances:
+              title: DrivingStrokesGainedBreakdown.hitFairways.chances
+              type: number
+            successes:
+              title: DrivingStrokesGainedBreakdown.hitFairways.successes
+              type: number
+          required:
+          - chances
+          - successes
+          additionalProperties: false
+          title: DrivingStrokesGainedBreakdown.hitFairways
+          type: object
       required:
-      - name
-      - succeeded
+      - numberOfShots
+      - longestDriveDistance
+      - hitFairways
       additionalProperties: false
-      title: HoleStat
+      title: DrivingStrokesGainedBreakdown
       type: object
     ApproachStrokesGainedBreakdown:
       properties:
@@ -696,6 +392,310 @@ components:
       additionalProperties: false
       title: ApproachStrokesGainedBreakdown
       type: object
+    Location:
+      properties:
+        latitude:
+          title: Location.latitude
+          type: number
+        longitude:
+          title: Location.longitude
+          type: number
+      required:
+      - latitude
+      - longitude
+      additionalProperties: false
+      title: Location
+      type: object
+    HoleStat:
+      properties:
+        name:
+          enum:
+          - gir
+          - sand_save
+          - up_and_down
+          title: HoleStat.name
+          type: string
+        succeeded:
+          title: HoleStat.succeeded
+          type: boolean
+      required:
+      - name
+      - succeeded
+      additionalProperties: false
+      title: HoleStat
+      type: object
+    Tee:
+      properties:
+        teeId:
+          title: Tee.teeId
+          description: the numeric identifier for the tee. this is unique against the courseId and courseVersion, not globally unique
+          type: number
+        teeName:
+          title: Tee.teeName
+          description: the display string for the tee that was played
+          type: string
+      required:
+      - teeId
+      - teeName
+      additionalProperties: false
+      title: Tee
+      type: object
+    PagedResponseHelper:
+      properties:
+        paging:
+          properties:
+            limit:
+              title: PagedResponseHelper.paging.limit
+              type: number
+            offset:
+              title: PagedResponseHelper.paging.offset
+              type: number
+            previous:
+              title: PagedResponseHelper.paging.previous
+              type: string
+            next:
+              title: PagedResponseHelper.paging.next
+              type: string
+          required:
+          - limit
+          - offset
+          additionalProperties: false
+          title: PagedResponseHelper.paging
+          type: object
+        results:
+          items:
+            title: PagedResponseHelper.results.[]
+          title: PagedResponseHelper.results
+          type: array
+      required:
+      - paging
+      - results
+      additionalProperties: false
+      title: PagedResponseHelper
+      type: object
+    PuttStrokesGainedBreakdown:
+      properties:
+        numberOfShots:
+          title: PuttStrokesGainedBreakdown.numberOfShots
+          type: number
+        zeroPutts:
+          title: PuttStrokesGainedBreakdown.zeroPutts
+          type: number
+        onePutts:
+          title: PuttStrokesGainedBreakdown.onePutts
+          type: number
+        twoPutts:
+          title: PuttStrokesGainedBreakdown.twoPutts
+          type: number
+        threePlusPutts:
+          title: PuttStrokesGainedBreakdown.threePlusPutts
+          type: number
+      required:
+      - numberOfShots
+      - zeroPutts
+      - onePutts
+      - twoPutts
+      - threePlusPutts
+      additionalProperties: false
+      title: PuttStrokesGainedBreakdown
+      type: object
+    Hole:
+      properties:
+        holeId:
+          title: Hole.holeId
+          type: number
+      required:
+      - holeId
+      additionalProperties: false
+      title: Hole
+      type: object
+    RoundDetails:
+      allOf:
+      - $ref: '#/components/schemas/Round'
+      - properties:
+          holes:
+            items:
+              $ref: '#/components/schemas/RoundHole'
+              title: holes.[]
+            title: holes
+            type: array
+        required:
+        - holes
+        additionalProperties: false
+        type: object
+      title: RoundDetails
+    GetOneRoundStatsResponse:
+      properties:
+        roundId:
+          title: GetOneRoundStatsResponse.roundId
+          type: number
+        courseId:
+          title: GetOneRoundStatsResponse.courseId
+          type: number
+        courseVersion:
+          title: GetOneRoundStatsResponse.courseVersion
+          type: number
+        goalHandicap:
+          title: GetOneRoundStatsResponse.goalHandicap
+          type: number
+        stats:
+          $ref: '#/components/schemas/RoundStats'
+          title: GetOneRoundStatsResponse.stats
+      required:
+      - roundId
+      - courseId
+      - courseVersion
+      - goalHandicap
+      - stats
+      additionalProperties: false
+      title: GetOneRoundStatsResponse
+      type: object
+    GetOneRoundResponse:
+      $ref: '#/components/schemas/RoundDetails'
+      title: GetOneRoundResponse
+    GetRoundsResponse:
+      allOf:
+      - $ref: '#/components/schemas/PagedResponseHelper'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Round'
+              title: results.[]
+            title: results
+            type: array
+        required:
+        - results
+        additionalProperties: false
+        type: object
+      title: GetRoundsResponse
+    ShortStrokesGainedBreakdown:
+      properties:
+        numberOfShots:
+          title: ShortStrokesGainedBreakdown.numberOfShots
+          type: number
+        upAndDown:
+          properties:
+            chances:
+              title: ShortStrokesGainedBreakdown.upAndDown.chances
+              type: number
+            successes:
+              title: ShortStrokesGainedBreakdown.upAndDown.successes
+              type: number
+          required:
+          - chances
+          - successes
+          additionalProperties: false
+          title: ShortStrokesGainedBreakdown.upAndDown
+          type: object
+      required:
+      - numberOfShots
+      - upAndDown
+      additionalProperties: false
+      title: ShortStrokesGainedBreakdown
+      type: object
+    TraditionalStatComparison:
+      properties:
+        actual:
+          title: TraditionalStatComparison.actual
+          type: number
+        goal:
+          title: TraditionalStatComparison.goal
+          type: number
+        scratch:
+          title: TraditionalStatComparison.scratch
+          type: number
+      required:
+      - actual
+      - goal
+      - scratch
+      additionalProperties: false
+      title: TraditionalStatComparison
+      type: object
+    RoundStats:
+      properties:
+        overall:
+          properties:
+            numberOfShots:
+              title: RoundStats.overall.numberOfShots
+              type: number
+            totalShotDistance:
+              title: RoundStats.overall.totalShotDistance
+              type: number
+          required:
+          - numberOfShots
+          - totalShotDistance
+          additionalProperties: false
+          title: RoundStats.overall
+          type: object
+        driving:
+          $ref: '#/components/schemas/DrivingStrokesGainedBreakdown'
+          title: RoundStats.driving
+        approach:
+          $ref: '#/components/schemas/ApproachStrokesGainedBreakdown'
+          title: RoundStats.approach
+        short:
+          $ref: '#/components/schemas/ShortStrokesGainedBreakdown'
+          title: RoundStats.short
+        putt:
+          $ref: '#/components/schemas/PuttStrokesGainedBreakdown'
+          title: RoundStats.putt
+      required:
+      - overall
+      - driving
+      - approach
+      - short
+      - putt
+      additionalProperties: false
+      title: RoundStats
+      type: object
+    RoundHole:
+      allOf:
+      - $ref: '#/components/schemas/Hole'
+      - properties:
+          stats:
+            items:
+              $ref: '#/components/schemas/HoleStat'
+              title: stats.[]
+            title: stats
+            type: array
+          startTime:
+            title: startTime
+            type: string
+          endTime:
+            title: endTime
+            type: string
+          mensPar:
+            title: mensPar
+            type: number
+          womensPar:
+            title: womensPar
+            type: number
+          pin:
+            $ref: '#/components/schemas/Pin'
+            title: pin
+          shots:
+            items:
+              $ref: '#/components/schemas/Shot'
+              title: shots.[]
+            title: shots
+            type: array
+        required:
+        - stats
+        - startTime
+        - endTime
+        - mensPar
+        - womensPar
+        - pin
+        - shots
+        additionalProperties: false
+        type: object
+      title: RoundHole
+    Pin:
+      allOf:
+      - $ref: '#/components/schemas/Location'
+      - additionalProperties: false
+        type: object
+      title: Pin
   securitySchemes:
     AccessCodeAuth:
       type: oauth2

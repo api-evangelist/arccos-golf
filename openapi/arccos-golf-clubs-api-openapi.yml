@@ -120,6 +120,24 @@ components:
     ClubType:
       title: ClubType
       type: string
+    GetOneClubResponse:
+      $ref: '#/components/schemas/Club'
+      title: GetOneClubResponse
+    GetClubsResponse:
+      allOf:
+      - $ref: '#/components/schemas/PagedResponseHelper'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Club'
+              title: results.[]
+            title: results
+            type: array
+        required:
+        - results
+        additionalProperties: false
+        type: object
+      title: GetClubsResponse
     Club:
       properties:
         clubId:
@@ -217,24 +235,6 @@ components:
       additionalProperties: false
       title: Club
       type: object
-    GetClubsResponse:
-      allOf:
-      - $ref: '#/components/schemas/PagedResponseHelper'
-      - properties:
-          results:
-            items:
-              $ref: '#/components/schemas/Club'
-              title: results.[]
-            title: results
-            type: array
-        required:
-        - results
-        additionalProperties: false
-        type: object
-      title: GetClubsResponse
-    GetOneClubResponse:
-      $ref: '#/components/schemas/Club'
-      title: GetOneClubResponse
   securitySchemes:
     AccessCodeAuth:
       type: oauth2
