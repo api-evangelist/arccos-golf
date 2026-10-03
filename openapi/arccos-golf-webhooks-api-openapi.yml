@@ -73,6 +73,12 @@ components:
       additionalProperties: false
       title: CreateWebhookRequest
       type: object
+    GetWebhooksResponse:
+      items:
+        $ref: '#/components/schemas/Webhook'
+        title: GetWebhooksResponse.[]
+      title: GetWebhooksResponse.[]
+      type: array
     Webhook:
       properties:
         id:
@@ -87,12 +93,6 @@ components:
       additionalProperties: false
       title: Webhook
       type: object
-    GetWebhooksResponse:
-      items:
-        $ref: '#/components/schemas/Webhook'
-        title: GetWebhooksResponse.[]
-      title: GetWebhooksResponse.[]
-      type: array
   securitySchemes:
     AccessCodeAuth:
       type: oauth2
