@@ -84,6 +84,60 @@ paths:
                 $ref: '#/components/schemas/GetOneClubResponse'
 components:
   schemas:
+    GetClubsResponse:
+      allOf:
+      - $ref: '#/components/schemas/PagedResponseHelper'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Club'
+              title: results.[]
+            title: results
+            type: array
+        required:
+        - results
+        additionalProperties: false
+        type: object
+      title: GetClubsResponse
+    PagedResponseHelper:
+      properties:
+        paging:
+          properties:
+            limit:
+              title: PagedResponseHelper.paging.limit
+              type: number
+            offset:
+              title: PagedResponseHelper.paging.offset
+              type: number
+            previous:
+              title: PagedResponseHelper.paging.previous
+              type: string
+            next:
+              title: PagedResponseHelper.paging.next
+              type: string
+          required:
+          - limit
+          - offset
+          additionalProperties: false
+          title: PagedResponseHelper.paging
+          type: object
+        results:
+          items:
+            title: PagedResponseHelper.results.[]
+          title: PagedResponseHelper.results
+          type: array
+      required:
+      - paging
+      - results
+      additionalProperties: false
+      title: PagedResponseHelper
+      type: object
+    GetOneClubResponse:
+      $ref: '#/components/schemas/Club'
+      title: GetOneClubResponse
+    ClubType:
+      title: ClubType
+      type: string
     Club:
       properties:
         clubId:
@@ -181,60 +235,6 @@ components:
       additionalProperties: false
       title: Club
       type: object
-    GetOneClubResponse:
-      $ref: '#/components/schemas/Club'
-      title: GetOneClubResponse
-    GetClubsResponse:
-      allOf:
-      - $ref: '#/components/schemas/PagedResponseHelper'
-      - properties:
-          results:
-            items:
-              $ref: '#/components/schemas/Club'
-              title: results.[]
-            title: results
-            type: array
-        required:
-        - results
-        additionalProperties: false
-        type: object
-      title: GetClubsResponse
-    PagedResponseHelper:
-      properties:
-        paging:
-          properties:
-            limit:
-              title: PagedResponseHelper.paging.limit
-              type: number
-            offset:
-              title: PagedResponseHelper.paging.offset
-              type: number
-            previous:
-              title: PagedResponseHelper.paging.previous
-              type: string
-            next:
-              title: PagedResponseHelper.paging.next
-              type: string
-          required:
-          - limit
-          - offset
-          additionalProperties: false
-          title: PagedResponseHelper.paging
-          type: object
-        results:
-          items:
-            title: PagedResponseHelper.results.[]
-          title: PagedResponseHelper.results
-          type: array
-      required:
-      - paging
-      - results
-      additionalProperties: false
-      title: PagedResponseHelper
-      type: object
-    ClubType:
-      title: ClubType
-      type: string
   securitySchemes:
     AccessCodeAuth:
       type: oauth2

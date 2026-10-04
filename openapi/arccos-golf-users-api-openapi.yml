@@ -33,6 +33,9 @@ paths:
                 $ref: '#/components/schemas/GetOneUserResponse'
 components:
   schemas:
+    GetOneUserResponse:
+      $ref: '#/components/schemas/User'
+      title: GetOneUserResponse
     User:
       properties:
         userId:
@@ -75,9 +78,6 @@ components:
       additionalProperties: false
       title: User
       type: object
-    GetOneUserResponse:
-      $ref: '#/components/schemas/User'
-      title: GetOneUserResponse
   securitySchemes:
     AccessCodeAuth:
       type: oauth2

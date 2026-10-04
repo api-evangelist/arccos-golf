@@ -63,6 +63,12 @@ paths:
           description: 200 response
 components:
   schemas:
+    GetWebhooksResponse:
+      items:
+        $ref: '#/components/schemas/Webhook'
+        title: GetWebhooksResponse.[]
+      title: GetWebhooksResponse.[]
+      type: array
     CreateWebhookRequest:
       properties:
         webhookUrl:
@@ -73,12 +79,6 @@ components:
       additionalProperties: false
       title: CreateWebhookRequest
       type: object
-    GetWebhooksResponse:
-      items:
-        $ref: '#/components/schemas/Webhook'
-        title: GetWebhooksResponse.[]
-      title: GetWebhooksResponse.[]
-      type: array
     Webhook:
       properties:
         id:
