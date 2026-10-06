@@ -46,7 +46,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.23'
 created: '2026-08-06'
-modified: '2026-08-06'
+modified: '2026-10-06'
 tags:
 - Company
 - Golf
@@ -302,6 +302,8 @@ apis:
   - type: Lifecycle
     url: lifecycle/arccos-golf-lifecycle.yml
 common:
+- url: https://www.arccosgolf.com/blogs/community.atom
+  type: BlogRSS
 - type: DomainSecurity
   url: security/arccos-golf-domain-security.yml
 - type: Website
