@@ -69,16 +69,6 @@ components:
         title: GetWebhooksResponse.[]
       title: GetWebhooksResponse.[]
       type: array
-    CreateWebhookRequest:
-      properties:
-        webhookUrl:
-          title: CreateWebhookRequest.webhookUrl
-          type: string
-      required:
-      - webhookUrl
-      additionalProperties: false
-      title: CreateWebhookRequest
-      type: object
     Webhook:
       properties:
         id:
@@ -92,6 +82,16 @@ components:
       - webhookUrl
       additionalProperties: false
       title: Webhook
+      type: object
+    CreateWebhookRequest:
+      properties:
+        webhookUrl:
+          title: CreateWebhookRequest.webhookUrl
+          type: string
+      required:
+      - webhookUrl
+      additionalProperties: false
+      title: CreateWebhookRequest
       type: object
   securitySchemes:
     AccessCodeAuth:

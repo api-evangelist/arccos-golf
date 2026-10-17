@@ -85,105 +85,6 @@ paths:
                 $ref: '#/components/schemas/GetCoursesResponse'
 components:
   schemas:
-    Tee:
-      properties:
-        teeId:
-          title: Tee.teeId
-          description: the numeric identifier for the tee. this is unique against the courseId and courseVersion, not globally unique
-          type: number
-        teeName:
-          title: Tee.teeName
-          description: the display string for the tee that was played
-          type: string
-      required:
-      - teeId
-      - teeName
-      additionalProperties: false
-      title: Tee
-      type: object
-    Location:
-      properties:
-        latitude:
-          title: Location.latitude
-          type: number
-        longitude:
-          title: Location.longitude
-          type: number
-      required:
-      - latitude
-      - longitude
-      additionalProperties: false
-      title: Location
-      type: object
-    PagedResponseHelper:
-      properties:
-        paging:
-          properties:
-            limit:
-              title: PagedResponseHelper.paging.limit
-              type: number
-            offset:
-              title: PagedResponseHelper.paging.offset
-              type: number
-            previous:
-              title: PagedResponseHelper.paging.previous
-              type: string
-            next:
-              title: PagedResponseHelper.paging.next
-              type: string
-          required:
-          - limit
-          - offset
-          additionalProperties: false
-          title: PagedResponseHelper.paging
-          type: object
-        results:
-          items:
-            title: PagedResponseHelper.results.[]
-          title: PagedResponseHelper.results
-          type: array
-      required:
-      - paging
-      - results
-      additionalProperties: false
-      title: PagedResponseHelper
-      type: object
-    GetCoursesResponse:
-      allOf:
-      - $ref: '#/components/schemas/PagedResponseHelper'
-      - properties:
-          results:
-            items:
-              $ref: '#/components/schemas/Course'
-              title: results.[]
-            title: results
-            type: array
-        required:
-        - results
-        additionalProperties: false
-        type: object
-      title: GetCoursesResponse
-    CourseHole:
-      properties:
-        holeId:
-          title: CourseHole.holeId
-          type: number
-        mensPar:
-          title: CourseHole.mensPar
-          type: number
-        womensPar:
-          title: CourseHole.womensPar
-          type: number
-      required:
-      - holeId
-      - mensPar
-      - womensPar
-      additionalProperties: false
-      title: CourseHole
-      type: object
-    GetOneCourseResponse:
-      $ref: '#/components/schemas/Course'
-      title: GetOneCourseResponse
     Course:
       properties:
         courseId:
@@ -246,6 +147,105 @@ components:
       - tees
       additionalProperties: false
       title: Course
+      type: object
+    CourseHole:
+      properties:
+        holeId:
+          title: CourseHole.holeId
+          type: number
+        mensPar:
+          title: CourseHole.mensPar
+          type: number
+        womensPar:
+          title: CourseHole.womensPar
+          type: number
+      required:
+      - holeId
+      - mensPar
+      - womensPar
+      additionalProperties: false
+      title: CourseHole
+      type: object
+    GetCoursesResponse:
+      allOf:
+      - $ref: '#/components/schemas/PagedResponseHelper'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Course'
+              title: results.[]
+            title: results
+            type: array
+        required:
+        - results
+        additionalProperties: false
+        type: object
+      title: GetCoursesResponse
+    GetOneCourseResponse:
+      $ref: '#/components/schemas/Course'
+      title: GetOneCourseResponse
+    Tee:
+      properties:
+        teeId:
+          title: Tee.teeId
+          description: the numeric identifier for the tee. this is unique against the courseId and courseVersion, not globally unique
+          type: number
+        teeName:
+          title: Tee.teeName
+          description: the display string for the tee that was played
+          type: string
+      required:
+      - teeId
+      - teeName
+      additionalProperties: false
+      title: Tee
+      type: object
+    PagedResponseHelper:
+      properties:
+        paging:
+          properties:
+            limit:
+              title: PagedResponseHelper.paging.limit
+              type: number
+            offset:
+              title: PagedResponseHelper.paging.offset
+              type: number
+            previous:
+              title: PagedResponseHelper.paging.previous
+              type: string
+            next:
+              title: PagedResponseHelper.paging.next
+              type: string
+          required:
+          - limit
+          - offset
+          additionalProperties: false
+          title: PagedResponseHelper.paging
+          type: object
+        results:
+          items:
+            title: PagedResponseHelper.results.[]
+          title: PagedResponseHelper.results
+          type: array
+      required:
+      - paging
+      - results
+      additionalProperties: false
+      title: PagedResponseHelper
+      type: object
+    Location:
+      properties:
+        latitude:
+          title: Location.latitude
+          type: number
+        longitude:
+          title: Location.longitude
+          type: number
+      required:
+      - latitude
+      - longitude
+      additionalProperties: false
+      title: Location
       type: object
   securitySchemes:
     AccessCodeAuth:
